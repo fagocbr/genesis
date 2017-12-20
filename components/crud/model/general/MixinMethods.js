@@ -1,3 +1,4 @@
+// noinspection ES6CheckImport
 import { get } from 'lodash'
 import { actions } from '../../model'
 import { setDotNotation } from 'genesis/support/transform'

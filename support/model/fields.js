@@ -70,6 +70,10 @@ export const standard = {
     this.form.tab = name
     return this
   },
+  $step (name) {
+    this.form.step = name
+    return this
+  },
   $disabled () {
     this.form.disabled = true
     return this
@@ -288,4 +292,44 @@ export const scoping = (scopes) => {
     return _scopes
   }
   return scopes
+}
+
+/**
+ * @param scope
+ * @returns {function(*): (boolean|*)}
+ */
+export const filter = (scope) => {
+  return (item) => item.scopes.includes(scope)
+}
+
+/**
+ * @param readonly
+ * @param component
+ * @returns {function(*): ({} & any & {disabled: boolean, field, component: string})}
+ */
+export const map = (readonly, component) => {
+  return (item) => Object.assign({}, item.form, {
+    disabled: readonly ? true : item.form.disabled,
+    field: item.field,
+    component: item.form.component ? (component + '-' + item.form.component) : ''
+  })
+}
+
+/**
+ *
+ * @param a
+ * @param b
+ * @returns {number}
+ */
+export const sort = (a, b) => {
+  if (!a.order || !b.order) {
+    return 0
+  }
+  if (a.order < b.order) {
+    return -1
+  }
+  if (a.order > b.order) {
+    return 1
+  }
+  return 0
 }

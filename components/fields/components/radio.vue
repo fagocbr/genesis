@@ -2,8 +2,8 @@
   <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component">
       <div v-show="editable" class="q-radio-container" :class="{'has-error': problems.length}">
-        <q-radio v-model="model" v-for="options in options" :disable="disabled"
-                 :key="options.value" :val="options.value" :label="options.label" @input="updateValue(model)"/>
+        <q-radio v-model="model" v-for="option in options" :disable="disabled"
+                 :key="option.value" :val="option.value" :label="option.label" @input="updateValue(model)"/>
         <div class="pull-right field-clear-wrapper" v-if="!disabled">
           <q-button v-if="cleanable" v-bind="{small: true, round: true, color: 'negative', icon: 'clear'}"
                       class="field-clear" @click="clearValue"/>
