@@ -1,3 +1,4 @@
+import { Events } from 'quasar-framework'
 import { get, set } from 'lodash'
 import { uniqid } from 'genesis/support/utils'
 import router from 'genesis/infra/router'
@@ -56,8 +57,12 @@ const params = (path, params) => {
   }, path)
 }
 
+const on = (name, callback) => Events.$on(name, callback)
+const off = (name) => Events.$off(name)
+const emit = (name, parameters) => Events.$emit(name, parameters)
+
 const genesis = {
-  get, set, browse
+  get, set, browse, on, off, emit
 }
 
 /**
