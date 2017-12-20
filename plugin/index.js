@@ -1,13 +1,16 @@
+// noinspection ES6CheckImport
 import { get, set } from 'lodash'
-import { uniqid } from 'genesis/support/utils'
+import { Events } from 'quasar-framework'
 import router from 'genesis/infra/router'
+import { uniqid } from 'genesis/support/utils'
 
 /**
  * @param {string} path
  * @param {Object} query
  * @param {string} changer
+ * @returns {number}
  */
-export const browse = (path, query = {}, changer = '~') => {
+const browse = (path, query = {}, changer = '~') => {
   let remove = false
   if (query === false) {
     query = {}
@@ -20,8 +23,9 @@ export const browse = (path, query = {}, changer = '~') => {
   if (query === undefined) {
     query = {}
   }
+
   if (typeof path !== 'string') {
-    push(Object.assign({}, path, {query}))
+    return push(Object.assign({}, path, {query}))
   }
 
   path = params(path, route.params)
@@ -32,14 +36,15 @@ export const browse = (path, query = {}, changer = '~') => {
     delete query[changer]
   }
 
-  push({path, query})
+  return push({path, query})
 }
 
 /**
  * @param {Object} to
+ * @returns {number}
  */
 const push = (to) => {
-  window.setTimeout(() => router.push(to), 100)
+  return window.setTimeout(() => router.push(to), 100)
 }
 
 /**
@@ -51,13 +56,18 @@ const params = (path, params) => {
   if (typeof params !== 'object') {
     return path
   }
-  return Object.keys(params).reduce((accumulate, key) => {
+  const reduce = (accumulate, key) => {
     return accumulate.replace(`:${key}`, params[key])
-  }, path)
+  }
+  return Object.keys(params).reduce(reduce, path)
 }
 
+const on = (name, callback) => Events.$on(name, callback)
+const off = (name) => Events.$off(name)
+const emit = (name, parameters) => Events.$emit(name, parameters)
+
 const genesis = {
-  get, set, browse
+  get, set, browse, on, off, emit
 }
 
 /**
