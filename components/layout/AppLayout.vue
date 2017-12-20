@@ -50,7 +50,7 @@
 
     <slot name="breadcrumb">
       <div class="breadcrumb-wrapper">
-        <app-breadcrumb v-bind="{icon: home, displayIcon: displayIcon}"></app-breadcrumb>
+        <app-breadcrumb v-bind="{icon: home}"></app-breadcrumb>
       </div>
     </slot>
 
@@ -94,13 +94,6 @@
       home: {
         type: String,
         default: 'home'
-      },
-      displayIcon: {
-        type: Object,
-        default: () => ({
-          show: true,
-          caracter: ''
-        })
       },
       viewport: {
         type: Object,

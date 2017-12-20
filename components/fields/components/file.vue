@@ -97,8 +97,8 @@
       uploaded (file, xhr) {
         let path = ''
         try {
-          const response = JSON.parse(xhr.response)
-          path = response.path
+          const body = this.$http.$body({data: JSON.parse(xhr.response)})
+          path = body.path
         }
         catch (e) {
           return

@@ -5,9 +5,8 @@
     <slot name="header"/>
 
     <slot v-if="top" name="top">
-      <app-grid-toolbar
-              v-bind="{handler, direction, page, pages, limit, total, paginate, buttons: buttons.top, toolbar: toolbar.pagination.top}"
-              @change-page="changePage" @change-limit="changeLimit" :class='toolbar.pagination.top.className'/>
+      <app-grid-toolbar v-bind="{handler, direction, page, pages, limit, total, paginate, buttons: buttons.top}"
+                        @change-page="changePage" @change-limit="changeLimit"/>
     </slot>
     <hr v-if="top">
 
@@ -19,15 +18,16 @@
     <hr v-if="bottom">
 
     <slot v-if="bottom" name="bottom">
-      <app-grid-toolbar
-              v-bind="{handler, direction, page, pages, limit, total, paginate, buttons: buttons.bottom, toolbar: toolbar.pagination.bottom}"
-              @change-page="changePage" @change-limit="changeLimit" :class='toolbar.pagination.bottom.className'/>
+      <app-grid-toolbar v-bind="{handler, direction, page, pages, limit, total, paginate, buttons: buttons.bottom}"
+                        @change-page="changePage" @change-limit="changeLimit"/>
     </slot>
 
     <slot name="footer"/>
 
     <slot v-if="floating" name="floating">
-      <app-button-bar v-bind="{floating: true, handler, buttons: buttons.floating}"/>
+      <div class="fixed-bottom-right">
+        <app-button-bar v-bind="{handler, buttons: buttons.floating}"/>
+      </div>
     </slot>
 
     <slot v-if="filtering" name="filter"></slot>
@@ -81,4 +81,6 @@
           color white !important
     hr
       margin 10px 0
+    .fixed-bottom-right
+      margin 5px
 </style>
