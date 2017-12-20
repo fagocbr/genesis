@@ -19,7 +19,6 @@
     </q-data-table>
   </div>
 </template>
-
 <script type="text/javascript">
   import MixinPermission from 'genesis/components/@mixins/MixinPermission'
   import { computed, data, methods, props } from './model'
@@ -31,6 +30,5 @@
     name: 'app-data-table'
   }
 </script>
-
 <style lang="stylus" rel="stylesheet/stylus">
 </style>

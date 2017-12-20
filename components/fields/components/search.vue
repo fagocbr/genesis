@@ -3,7 +3,6 @@
     <div slot="component">
 
       <div v-show="editable" :class="{'has-error': problems.length}">
-
         <div ref="input" class="input full-width" :class="{'disabled': disabled}">
           <span v-if="!selected" class="field-placeholder">{{ placeholder }}</span>
           <span v-else :class="'selected ellipsis'">{{ selected }}</span>
@@ -15,7 +14,6 @@
           </div>
         </div>
       </div>
-
       <div v-show="!editable" class="html ellipsis" v-html="html"></div>
 
       <q-modal ref="modal" position="bottom" class="field-search-modal" :content-css="css">
@@ -124,16 +122,6 @@
         type: String,
         default: () => ('')
       },
-      uri: {
-        type: String,
-        default: () => ('')
-      },
-      config: {
-        type: Object,
-        default: () => ({
-          noLoading: true
-        })
-      },
       register: {
         type: Boolean,
         default: () => (false)
@@ -203,7 +191,7 @@
        * @param {string} term
        * @param {boolean} reset
        */
-      searchData (term, reset = false) {
+      searchData (term, reset) {
         let parameters = this.parameters(term, this.remote, this.filters)
         if (reset) {
           this.pagination.page = 1
@@ -222,7 +210,7 @@
 
         this.remote
           .service
-          .get(this.uri, configure(this.pagination.page, this.pagination.size, filters), this.config)
+          .get('', configure(this.pagination.page, this.pagination.size, filters), {})
           .then((response) => (this.searchParser(response, done)))
           .catch(() => (done([])))
       },

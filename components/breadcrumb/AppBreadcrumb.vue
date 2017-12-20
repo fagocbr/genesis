@@ -7,10 +7,7 @@
     </li>
     <li v-for="item in items">
       <router-link :to="item.to">
-        <template v-if="displayIcon.show">
-          <q-icon :name="item.icon"></q-icon>
-        </template>
-        <template v-else="displayIcon.show">{{ displayIcon.caracter }}</template>
+        <q-icon :name="item.icon"></q-icon>
         <small class="breadcrumb-label">{{ item.label }}</small>
       </router-link>
       <app-tooltip :disable="!item.tooltip">{{ item.tooltip }}</app-tooltip>
@@ -28,13 +25,6 @@
       icon: {
         type: String,
         default: 'home'
-      },
-      displayIcon: {
-        type: Object,
-        default: () => ({
-          show: true,
-          caracter: ''
-        })
       }
     },
     data: () => ({

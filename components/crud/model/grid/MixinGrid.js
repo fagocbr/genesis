@@ -48,49 +48,6 @@ export default {
       type: Boolean,
       default: () => true
     },
-    toolbar: {
-      type: Object,
-      default: () => ({
-        pagination: {
-          top: {
-            show: false,
-            className: 'top-navigation',
-            elementsPaginate: {
-              pagination: {
-                show: true,
-                className: 'has-25 xs-70'
-              },
-              select: {
-                show: true,
-                className: 'has-15 xs-30'
-              },
-              info: {
-                show: true,
-                className: 'has-15 xs-30'
-              }
-            }
-          },
-          bottom: {
-            show: true,
-            className: 'bottom-navigation',
-            elementsPaginate: {
-              pagination: {
-                show: true,
-                className: 'has-25 xs-70'
-              },
-              select: {
-                show: true,
-                className: 'has-15 xs-30'
-              },
-              info: {
-                show: true,
-                className: 'has-20 hidden-small'
-              }
-            }
-          }
-        }
-      })
-    },
     unity: {
       type: String,
       default: () => 'vw'
@@ -164,13 +121,11 @@ export default {
     },
     /**
      * @param {Object} item
-     * @param {Number} index
-     * @returns {Object}
+     * @returns {Array}
      */
-    mapColumns (item, index) {
+    mapColumns (item) {
       const assign = {
         field: item.grid.field,
-        order: item.grid.order || index,
         width: typeof item.grid.width === 'number' ? item.grid.width + this.unity : item.grid.width
       }
       return Object.assign({}, item.grid, assign)
@@ -187,6 +142,9 @@ export default {
      * @param {Object} b
      */
     sortColumns (a, b) {
+      if (!a.order || !b.order) {
+        return 0
+      }
       if (a.order < b.order) {
         return -1
       }
@@ -254,6 +212,7 @@ export default {
     }
   },
   created () {
+
     if (this.$route.query.page) {
       this.page = parseInt(this.$route.query.page)
       this.pages = parseInt(this.$route.query.page)
