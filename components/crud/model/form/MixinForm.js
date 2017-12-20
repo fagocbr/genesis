@@ -2,6 +2,7 @@ import { Data } from 'genesis'
 import { mapActions } from 'vuex'
 import { toast, undo } from 'genesis/support/message/index'
 import { wildcard } from 'genesis/support/utils/index'
+import { filter, map, sort } from 'genesis/support/model/fields'
 
 export default {
   props: {
@@ -99,40 +100,7 @@ export default {
     /**
      */
     renderElements () {
-      this.fields = this.schemas.filter(this.filterFields).map(this.mapFields).sort(this.sortFields)
-    },
-    /**
-     * @param {Object} item
-     * @returns {boolean}
-     */
-    filterFields (item) {
-      return item.scopes.includes(this.scope)
-    },
-    /**
-     * @param {Object} item
-     * @param {Number} index
-     * @returns {Object}
-     */
-    mapFields (item, index) {
-      return Object.assign({}, item.form, {
-        disabled: this.readonly ? true : item.form.disabled,
-        order: item.form.order || index,
-        field: item.field,
-        component: item.form.component ? (this.component + '-' + item.form.component) : ''
-      })
-    },
-    /**
-     * @param {Object} a
-     * @param {Object} b
-     */
-    sortFields (a, b) {
-      if (a.order < b.order) {
-        return -1
-      }
-      if (a.order > b.order) {
-        return 1
-      }
-      return 0
+      this.fields = this.schemas.filter(filter(this.scope)).map(map(this.readonly, this.component)).sort(sort)
     },
     /**
      * @param {Object} data

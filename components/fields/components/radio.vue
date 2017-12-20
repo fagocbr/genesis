@@ -2,18 +2,17 @@
   <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component">
       <div v-show="editable" class="q-radio-container" :class="{'has-error': problems.length}">
-        <q-radio v-model="model" v-for="options in options" :disable="disabled"
-                 :key="options.value" :val="options.value" :label="options.label" @input="updateValue(model)"/>
+        <q-radio v-model="model" v-for="options in options" :disable="disabled || options.disable"
+                 :key="options.value" :val="options.value" v-bind="options" @input="updateValue(model)"/>
         <div class="pull-right field-clear-wrapper" v-if="!disabled">
           <q-button v-if="cleanable" v-bind="{small: true, round: true, color: 'negative', icon: 'clear'}"
-                      class="field-clear" @click="clearValue"/>
+                      class="field-clear" @click="model = cleaning"/>
         </div>
       </div>
       <div v-show="!editable" class="html" v-html="html"></div>
     </div>
   </field>
 </template>
-
 <script type="text/javascript">
   import { get } from 'lodash'
   import Field from 'genesis/components/fields/components/base.vue'
@@ -48,12 +47,6 @@
           return
         }
         this.model = value
-      },
-      /**
-       */
-      clearValue () {
-        this.model = this.cleaning
-        this.updateValue(this.model)
       }
     },
     watch: {
