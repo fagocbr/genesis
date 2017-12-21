@@ -2,18 +2,16 @@
 <template>
   <div class="form app-grid-toolbar">
     <template v-if="paginate">
-      <div v-if="toolbar.elementsPaginate.pagination.show"
-            :class="['field', toolbar.elementsPaginate.pagination.className ]"
-           class="app-grid-pagination">
+      <div v-if="$g.get(toolbar, 'elementsPaginate.pagination.show')" :class="paginationClassName"
+           class="app-grid-pagination field">
         <q-pagination v-model="pagination" v-bind="{max}" @input="emitPagination(pagination)"/>
       </div>
-      <div v-if="toolbar.elementsPaginate.select.show"
-            :class="['field', toolbar.elementsPaginate.select.className ]">
+      <div v-if="$g.get(toolbar, 'elementsPaginate.select.show')" :class="selectClassName"
+           class="app-grid-select field">
         <q-select v-model="select" v-bind="{options}" @input="emitSelect(select)"></q-select>
       </div>
-      <div v-if="toolbar.elementsPaginate.info.show"
-            :class="['field', toolbar.elementsPaginate.info.className ]"
-           class="app-grid-info">
+      <div v-if="$g.get(toolbar, 'elementsPaginate.info.show')" :class="infoClassName"
+           class="app-grid-info field">
         <div v-if="counter.total">{{ counter.start }} - {{ counter.end }} de {{ counter.total }}</div>
         <div v-else class="counter">Exibindo {{ counter.end }} registros</div>
       </div>
@@ -92,22 +90,31 @@
         type: Object,
         default: () => ({
           show: false,
-          className: 'top-navigation',
-          elementsPaginate: {
-            pagination: {
-              show: true,
-              className: 'has-25 xs-70'
-            },
-            select: {
-              show: true,
-              className: 'has-15 xs-30'
-            },
-            info: {
-              show: true,
-              className: 'has-15 xs-30'
-            }
-          }
+          className: ''
         })
+      }
+    },
+    computed: {
+      paginationClassName () {
+        const paginationClassName = this.$g.get(this.toolbar, 'elementsPaginate.pagination.className')
+        if (paginationClassName) {
+          return paginationClassName
+        }
+        return 'has-25 xs-70'
+      },
+      selectClassName () {
+        const selectClassName = this.$g.get(this.toolbar, 'elementsPaginate.select.className')
+        if (selectClassName) {
+          return selectClassName
+        }
+        return 'has-15 xs-30'
+      },
+      infoClassName () {
+        const infoClassName = this.$g.get(this.toolbar, 'elementsPaginate.info.className')
+        if (infoClassName) {
+          return infoClassName
+        }
+        return 'has-20 hidden-small'
       }
     },
     data: () => ({
