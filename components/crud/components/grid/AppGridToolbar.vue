@@ -2,21 +2,21 @@
 <template>
   <div class="form app-grid-toolbar">
     <template v-if="paginate">
-      <div v-if="$g.get(toolbar, 'elementsPaginate.pagination.show')" :class="paginationClassName"
+      <div v-if="$g.get(toolbar, 'elementsPaginate.pagination.show', true)" :class="paginationClassName"
            class="app-grid-pagination field">
         <q-pagination v-model="pagination" v-bind="{max}" @input="emitPagination(pagination)"/>
       </div>
-      <div v-if="$g.get(toolbar, 'elementsPaginate.select.show')" :class="selectClassName"
+      <div v-if="$g.get(toolbar, 'elementsPaginate.select.show', true)" :class="selectClassName"
            class="app-grid-select field">
         <q-select v-model="select" v-bind="{options}" @input="emitSelect(select)"></q-select>
       </div>
-      <div v-if="$g.get(toolbar, 'elementsPaginate.info.show')" :class="infoClassName"
+      <div v-if="$g.get(toolbar, 'elementsPaginate.info.show', true)" :class="infoClassName"
            class="app-grid-info field">
         <div v-if="counter.total">{{ counter.start }} - {{ counter.end }} de {{ counter.total }}</div>
         <div v-else class="counter">Exibindo {{ counter.end }} registros</div>
       </div>
     </template>
-    <div :class="['field',  toolbar.show ? 'has-40' : 'has-100']">
+    <div :class="['field',  $g.get(toolbar, 'show', true) ? 'has-40' : 'has-100']">
       <app-button-bar v-bind="{buttons, handler, direction}"/>
     </div>
   </div>
@@ -88,10 +88,7 @@
       },
       toolbar: {
         type: Object,
-        default: () => ({
-          show: false,
-          className: ''
-        })
+        default: () => ({})
       }
     },
     computed: {
