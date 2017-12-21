@@ -1,12 +1,12 @@
 <template>
   <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component" :class="{'row': image}">
-      <template v-if="file">
+      <template v-if="model">
         <div v-if="image" class="col-2">
           <img :src="src" class="image"/>
         </div>
         <div v-else :class="'file-link'">
-          <a :href="href">{{ file }}</a>
+          <a :href="href" target="_blank">{{ model }}</a>
         </div>
       </template>
       <div v-if="!disabled" :class="{'col': image}">
@@ -29,16 +29,20 @@
     },
     name: 'field-file',
     props: {
-      download: {
-        default: ''
+      downloadUrl: {
+        type: String,
+        default: () => ' pay l ncu'
       },
       file: {
-        default: 'file'
+        type: String,
+        default: () => 'file'
       },
       url: {
+        type: String,
         default: URL_FILE_UPLOAD
       },
       extensions: {
+        type: String,
         default: ''
       },
       image: {
@@ -47,7 +51,7 @@
       }
     },
     data: () => ({
-      file: undefined,
+      model: undefined,
       uid: ''
     }),
     computed: {
@@ -98,23 +102,23 @@
         catch (e) {
           return
         }
-        this.file = ''
+        this.model = ''
         this.$emit('input', path)
       },
       parseURI () {
-        if (typeof this.download === 'string') {
-          return this.download.replace('{file}', this.file)
+        if (typeof this.downloadUrl === 'string') {
+          return this.downloadUrl.replace('{file}', this.model)
         }
-        if (typeof this.download === 'function') {
-          return this.download(this.file)
+        if (typeof this.downloadUrl === 'function') {
+          return this.downloadUrl(this.model)
         }
       }
     },
     watch: {
       value (value) {
-        if (this.file === undefined) {
+        if (this.model === undefined) {
           this.uid = String(value).split('/').pop().split('.').shift()
-          this.file = value
+          this.model = value
         }
       }
     },

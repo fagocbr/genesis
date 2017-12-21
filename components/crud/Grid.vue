@@ -5,23 +5,24 @@
     <slot name="header"/>
 
     <slot v-if="top" name="top">
-      <app-grid-toolbar
-              v-bind="{handler, direction, page, pages, limit, total, paginate, buttons: buttons.top, toolbar: toolbar.pagination.top}"
-              @change-page="changePage" @change-limit="changeLimit" :class='toolbar.pagination.top.className'/>
+      <app-grid-toolbar v-bind="toolbarTop" @change-page="changePage" @change-limit="changeLimit"
+                        :class="$g.get(toolbar, 'pagination.top.className')"
+      />
     </slot>
     <hr v-if="top">
 
     <slot name="content">
       <component :is="content" ref="grid"
-                      v-bind="{columns, data, debug, position, slots, styles, bodyStyle, actions: buttons.middle}"/>
+                 v-bind="{columns, data, debug, position, slots, styles, bodyStyle, actions: buttons.middle}"
+      />
     </slot>
 
     <hr v-if="bottom">
 
     <slot v-if="bottom" name="bottom">
-      <app-grid-toolbar
-              v-bind="{handler, direction, page, pages, limit, total, paginate, buttons: buttons.bottom, toolbar: toolbar.pagination.bottom}"
-              @change-page="changePage" @change-limit="changeLimit" :class='toolbar.pagination.bottom.className'/>
+      <app-grid-toolbar v-bind="toolbarBottom" @change-page="changePage" @change-limit="changeLimit"
+                        :class="$g.get(toolbar, 'pagination.bottom.className')"
+      />
     </slot>
 
     <slot name="footer"/>
@@ -31,9 +32,11 @@
     </slot>
 
     <slot v-if="filtering" name="filter"></slot>
+
     <q-modal ref="filter" position="right" :content-css="filter.css">
       <app-grid-filter v-if="search" :filters="filter.columns" :record="filter.record"
-                       @close="filterClose" @apply="filterApply" @clear="filterClear"/>
+                       @close="filterClose" @apply="filterApply" @clear="filterClear"
+      />
     </q-modal>
 
     <template v-if="debugging">
