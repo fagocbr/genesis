@@ -3,7 +3,7 @@
     <div slot="component" :class="{'row': image}">
       <template v-if="download">
         <div v-if="image" class="col-2">
-          <img :src="download" class="image"/>
+          <img :src="src" class="image"/>
         </div>
         <div v-else :class="'file-link'">
           <a :href="href">{{ download }}</a>

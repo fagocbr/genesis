@@ -21,7 +21,7 @@
       <q-modal ref="modal" position="bottom" class="field-search-modal" :content-css="css">
         <div class="text-right">
           <span>
-            <q-icon class="cursor-pointer field-search-closer" name="cancel" @click="closeWidget"></q-icon>
+            <q-icon class="cursor-pointer field-search-closer" name="cancel" @click="closeWidget"/>
             <app-tooltip>Fechar</app-tooltip>
           </span>
         </div>
@@ -304,6 +304,9 @@
     },
     mounted () {
       this.applyValue(this.value)
+    },
+    created () {
+      console.log('~> created')
     }
   }
 </script>

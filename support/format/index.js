@@ -103,7 +103,7 @@ export const formatHighLight = (query, split = 0) => {
  * @link https://www.w3schools.com/tags/tag_ol.asp
  *
  * @param {*} index
- * @param {string} type
+ * @param {boolean|string} type
  * @returns {*}
  */
 export const formatEnumType = (index, type) => {

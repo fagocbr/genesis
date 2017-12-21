@@ -10,7 +10,7 @@ import { uniqid } from 'genesis/support/utils'
  * @param {string} changer
  * @returns {number}
  */
-const browse = (path, query = {}, changer = '~') => {
+export const browse = (path, query = {}, changer = '~') => {
   let remove = false
   if (query === false) {
     query = {}
