@@ -1,8 +1,16 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" contenteditable="false" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component">
-      <div id="editor" :class="{'html': !editable}">
-        <froala :tag="'textarea'" :config="config" v-model="model"></froala>
+      <div
+        v-if="disabled"
+        v-html="model"
+        class="disabled field input html">
+      </div>
+      <div v-else id="editor">
+        <froala
+          v-model="model"
+          :tag="'textarea'"
+          :config="config" />
       </div>
     </div>
   </field>
