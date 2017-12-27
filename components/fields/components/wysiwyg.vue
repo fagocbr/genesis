@@ -25,51 +25,53 @@
   import FieldAbstract from 'genesis/components/fields/abstract'
 
   export default {
+    extends: FieldAbstract,
+    name: 'field-wysiwyg',
     components: {
       Field
     },
-    computed: {
-      ...mapGetters(['getAppHeight'])
+    props: {
+      placeholder: String
     },
-    data: () => ({
-      model: '',
-      updated: false,
-      config: {
-        events: {
-          'froalaEditor.initialized' () {
-            console.log('froalaEditor.initialized')
-          }
-        },
-        language: 'pt_br',
-        imagePaste: true,
-        charCounterCount: true,
-        placeholderText: 'test',
-        toolbarStickyOffset: 50,
+    data () {
+      return {
+        model: '',
+        updated: false,
+        config: {
+          placeholderText: this.placeholder,
+          height: this.getAppHeight - 200,
+          imageManagerLoadURL: URL_IMAGE_MANAGER,
+          imageUploadURL: URL_IMAGE_UPLOAD,
+          events: {
+            'froalaEditor.initialized' () {
+            }
+          },
+          language: 'pt_br',
+          imagePaste: true,
+          charCounterCount: true,
+          toolbarStickyOffset: 50,
         height: this.getAppHeight - 200,
-        imageManagerPageSize: 20,
+          imageManagerPageSize: 20,
         imageManagerLoadURL: URL_IMAGE_MANAGER,
         imageUploadURL: URL_IMAGE_UPLOAD,
-        imageUploadParams: {
-          uid: uid(),
-          type: 'image'
-        },
-        // toolbarButtons: [
-        //   'undo', 'redo', '|',
-        //   'bold', 'italic', 'underline', 'strikeThrough', 'paragraphFormat', '|',
-        //   'subscript', 'superscript', '|',
-        //   'outdent', 'indent', '|',
-        //   'formatOL', 'formatUL', 'insertTable', 'insertLink', 'insertImage', '|',
-        //   'clearFormatting', 'html'
-        // ],
-        toolbarButtonsXS: ['undo', 'redo', '-', 'bold', 'italic', 'underline']
+          imageUploadParams: {
+            uid: uid(),
+            type: 'image'
+          },
+          // toolbarButtons: [
+          //   'undo', 'redo', '|',
+          //   'bold', 'italic', 'underline', 'strikeThrough', 'paragraphFormat', '|',
+          //   'subscript', 'superscript', '|',
+          //   'outdent', 'indent', '|',
+          //   'formatOL', 'formatUL', 'insertTable', 'insertLink', 'insertImage', '|',
+          //   'clearFormatting', 'html'
+          // ],
+          toolbarButtonsXS: ['undo', 'redo', '-', 'bold', 'italic', 'underline']
+        }
       }
-    }),
-    extends: FieldAbstract,
-    name: 'field-wysiwyg',
-    mounted () {
-      if (this.value) {
-        this.model = this.value
-      }
+    },
+    computed: {
+      ...mapGetters(['getAppHeight'])
     },
     watch: {
       value () {
@@ -81,6 +83,11 @@
       model (value) {
         this.updated = true
         this.$emit('input', value)
+      }
+    },
+    mounted () {
+      if (this.value) {
+        this.model = this.value
       }
     }
   }
