@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import { validators } from './validators'
 import {
   formatBoolean,
   formatDate,
@@ -18,7 +19,7 @@ export const _scopes = ['index', 'view', 'create', 'edit']
 /**
  * @type {Object}
  */
-export const standard = {
+const base = {
   field: '',
   label: '',
   scopes: [],
@@ -84,19 +85,6 @@ export const standard = {
   $pk () {
     this.primaryKey = true
     return this.$readonly().$out('create').$grid({width: '60px'})
-  },
-  $validate (rule, value = true) {
-    if (!this.form.validate) {
-      this.form.validate = {}
-    }
-    this.form.validate[rule] = value
-    return this
-  },
-  $required (require = true) {
-    if (require) {
-      this.$validate('required')
-    }
-    return this
   },
   $link (path) {
     this.grid.format = (value, row) => {
@@ -281,6 +269,11 @@ export const standard = {
 }
 
 /**
+ * @type {Object}
+ */
+export const standard = Object.assign(base, validators)
+
+/**
  * @param scopes
  * @returns {Array}
  */
@@ -292,4 +285,44 @@ export const scoping = (scopes) => {
     return _scopes
   }
   return scopes
+}
+
+/**
+ * @param scope
+ * @returns {function(*): (boolean|*)}
+ */
+export const filter = (scope) => {
+  return (item) => item.scopes.includes(scope)
+}
+
+/**
+ * @param readonly
+ * @param component
+ * @returns {function(*): ({} & any & {disabled: boolean, field, component: string})}
+ */
+export const map = (readonly, component) => {
+  return (item) => Object.assign({}, item.form, {
+    disabled: readonly ? true : item.form.disabled,
+    field: item.field,
+    component: item.form.component ? (component + '-' + item.form.component) : ''
+  })
+}
+
+/**
+ *
+ * @param a
+ * @param b
+ * @returns {number}
+ */
+export const sort = (a, b) => {
+  if (!a.order || !b.order) {
+    return 0
+  }
+  if (a.order < b.order) {
+    return -1
+  }
+  if (a.order > b.order) {
+    return 1
+  }
+  return 0
 }
