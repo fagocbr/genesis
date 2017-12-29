@@ -1,12 +1,12 @@
 <template>
   <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component" :class="{'row': image}">
-      <template v-if="download">
+      <template v-if="model">
         <div v-if="image" class="col-2">
-          <img :src="download" class="image"/>
+          <img :src="src" class="image"/>
         </div>
         <div v-else :class="'file-link'">
-          <a :href="href">{{ download }}</a>
+          <a :href="href" target="_blank">{{ model }}</a>
         </div>
       </template>
       <div v-if="!disabled" :class="{'col': image}">
@@ -29,13 +29,20 @@
     },
     name: 'field-file',
     props: {
+      downloadUrl: {
+        type: String,
+        default: () => ' pay l ncu'
+      },
       file: {
-        default: 'file'
+        type: String,
+        default: () => 'file'
       },
       url: {
+        type: String,
         default: URL_FILE_UPLOAD
       },
       extensions: {
+        type: String,
         default: ''
       },
       image: {
@@ -44,7 +51,7 @@
       }
     },
     data: () => ({
-      download: undefined,
+      model: undefined,
       uid: ''
     }),
     computed: {
@@ -69,20 +76,12 @@
         }
       },
       src () {
-        if (typeof this.src === 'string') {
-          return this.src.replace('{download}', this.download)
-        }
-        if (typeof this.src === 'function') {
-          return this.src(this.download)
-        }
-        return this.download
+        return this.parseURI()
       },
       href () {
-        if (typeof this.href === 'string') {
-          return this.href.replace('{download}', this.download)
-        }
-        if (typeof this.href === 'function') {
-          return this.href(this.download)
+        let uri
+        if (uri = this.parseURI()) {
+          return uri
         }
         return '#'
       }
@@ -103,15 +102,23 @@
         catch (e) {
           return
         }
-        this.download = ''
+        this.model = ''
         this.$emit('input', path)
+      },
+      parseURI () {
+        if (typeof this.downloadUrl === 'string') {
+          return this.downloadUrl.replace('{file}', this.model)
+        }
+        if (typeof this.downloadUrl === 'function') {
+          return this.downloadUrl(this.model)
+        }
       }
     },
     watch: {
       value (value) {
-        if (this.download === undefined) {
+        if (this.model === undefined) {
           this.uid = String(value).split('/').pop().split('.').shift()
-          this.download = value
+          this.model = value
         }
       }
     },

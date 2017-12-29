@@ -51,9 +51,10 @@ export default {
     toolbar: {
       type: Object,
       default: () => ({
+        /*
         pagination: {
           top: {
-            show: false,
+            show: true,
             className: 'top-navigation',
             elementsPaginate: {
               pagination: {
@@ -89,6 +90,7 @@ export default {
             }
           }
         }
+        */
       })
     },
     unity: {
@@ -144,6 +146,32 @@ export default {
         classNames.push('--grid-filtering')
       }
       return classNames
+    },
+    toolbarTop () {
+      return {
+        handler: this.handler,
+        direction: this.direction,
+        page: this.page,
+        pages: this.pages,
+        limit: this.limit,
+        total: this.total,
+        paginate: this.paginate,
+        buttons: this.buttons.top,
+        toolbar: this.$g.get(this.toolbar, 'pagination.top')
+      }
+    },
+    toolbarBottom () {
+      return {
+        handler: this.handler,
+        direction: this.direction,
+        page: this.page,
+        pages: this.pages,
+        limit: this.limit,
+        total: this.total,
+        paginate: this.paginate,
+        buttons: this.buttons.bottom,
+        toolbar: this.$g.get(this.toolbar, 'pagination.bottom')
+      }
     }
   },
   methods: {
