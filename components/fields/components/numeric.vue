@@ -26,10 +26,12 @@
     name: 'field-numeric',
     props: {
       min: {
-        type: Number
+        type: Number,
+        default: Number.MIN_SAFE_INTEGER
       },
       max: {
-        type: Number
+        type: Number,
+        default: Number.MAX_SAFE_INTEGER
       },
       step: {
         type: Number,
@@ -41,13 +43,13 @@
       model: undefined
     }),
     computed: {
-      bind() {
+      bind () {
         return {
           min: this.min,
           max: this.max
         }
       },
-      html() {
+      html () {
         return this.model
       }
     },
@@ -55,7 +57,7 @@
       /**
        * @param {Number} value
        */
-      applyValue(value) {
+      applyValue (value) {
         if (!this.updated) {
           this.model = value
         }
@@ -63,7 +65,7 @@
       },
       /**
        */
-      updateValue() {
+      updateValue () {
         this.updated = true
         if (!this.disabled) {
           let value = this.model
@@ -88,7 +90,7 @@
        * @param {Number} value
        * @param {Number} step
        */
-      add(value, step) {
+      add (value, step) {
         this.applyValue(Number(value || 0) + step)
         this.updateValue()
       },
@@ -96,20 +98,20 @@
        * @param {Number} value
        * @param {Number} step
        */
-      remove(value, step) {
+      remove (value, step) {
         this.applyValue(Number(value || 0) - step)
         this.updateValue()
       }
     },
     watch: {
-      value(value) {
+      value (value) {
         this.applyValue(value)
       },
-      mask() {
+      mask () {
         this.applyValue(this.value)
       }
     },
-    mounted() {
+    mounted () {
       this.applyValue(this.value)
     }
   }
