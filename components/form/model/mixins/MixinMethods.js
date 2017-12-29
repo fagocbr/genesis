@@ -45,7 +45,14 @@ export default {
           configure[property] = action
           return true
         }
-        configure[property] = action((validate[property]))
+
+        /** In case if validate[property] is a function, insert in scope of function the values of models (record, schemas and itself) */
+        if (typeof validate[property] === 'function') {
+          validate[property] = validate[property](this.record, this.schemas, this)
+        }
+
+        const parameters = Array.isArray(validate[property]) ? validate[property] : [validate[property]]
+        configure[property] = action(...parameters)
       })
       return configure
     },
@@ -56,6 +63,11 @@ export default {
       if (this.tabs.length) {
         this.tabs.forEach(tab => {
           components[tab.name] = this.fields.filter(field => field.tab === tab.name).reduce(arrayToObject, {})
+        })
+      }
+      if (this.steps.length) {
+        this.steps.forEach(step => {
+          components[step.name] = this.fields.filter(field => field.step === step.name).reduce(arrayToObject, {})
         })
       }
       this.components = components
