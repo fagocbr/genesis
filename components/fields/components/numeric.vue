@@ -26,10 +26,12 @@
     name: 'field-numeric',
     props: {
       min: {
-        type: Number
+        type: Number,
+        default: Number.MIN_SAFE_INTEGER
       },
       max: {
-        type: Number
+        type: Number,
+        default: Number.MAX_SAFE_INTEGER
       },
       step: {
         type: Number,
@@ -66,6 +68,21 @@
       updateValue () {
         this.updated = true
         if (!this.disabled) {
+          let value = this.model
+          if (this.min === 0 || this.min) {
+            value = value < this.min ? this.min : value
+          }
+
+          if (this.max === 0 || this.max) {
+            value = value > this.max ? this.max : value
+          }
+
+          if (this.model !== value) {
+            this.updated = false
+          }
+
+          this.model = value
+
           this.$emit('input', this.model)
         }
       },
