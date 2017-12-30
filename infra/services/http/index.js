@@ -7,15 +7,29 @@ import { loading } from 'genesis/support/message'
 import configure from './configure'
 
 /**
+ * @type {Object}
+ */
+const HEADERS = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+}
+
+/**
+ * @param {string} baseURL
+ * @param {Object} headers
+ * @return {AxiosInstance}
+ */
+export const create = (baseURL = '', headers = {}) => {
+  return axios.create({
+    baseURL: baseURL || URL_API,
+    headers: Object.assign({}, HEADERS, headers)
+  })
+}
+
+/**
  * @type {Axios}
  */
-export const http = axios.create({
-  baseURL: URL_API,
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  }
-})
+export const http = create()
 
 /**
  * @returns {Axios}
