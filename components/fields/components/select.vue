@@ -101,6 +101,11 @@
        * @param {*} value
        */
       applyValue (value) {
+        if (value === this.model) {
+          return
+        }
+        this.$emit('event', 'selected', this, this.getObjects(this.model))
+
         if (!this.multiple) {
           this.model = value
           return
@@ -114,6 +119,35 @@
       clearValue () {
         this.model = this.cleaning
         this.updateValue(this.model)
+      },
+      /**
+       * @param value
+       * @returns {{}}
+       */
+      getObjects (value) {
+        let objects = []
+
+        if (!Array.isArray(this.options)) {
+          return {}
+        }
+
+        if (Array.isArray(value)) {
+          this.options.forEach((_object) => {
+            if (value.includes(_object.value)) {
+              objects.push(_object)
+            }
+          })
+
+          return objects
+        }
+
+        this.options.forEach((_object) => {
+          if (value === _object.value) {
+            objects.push(_object)
+          }
+        })
+
+        return objects.shift()
       }
     },
     watch: {
