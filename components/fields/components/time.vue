@@ -27,13 +27,14 @@
 </template>
 
 <script type="text/javascript">
-  import moment from 'moment'
   import { VueMaskDirective } from 'v-mask'
   import Field from 'genesis/components/fields/components/base.vue'
   import FieldAbstract from 'genesis/components/fields/abstract'
-  import { mask, unMask, padRight, padLeft } from 'genesis/support/utils'
+  import { parseTime } from 'genesis/support/format'
+  import { mask, padLeft, padRight, unMask } from 'genesis/support/utils'
 
   export default {
+    name: 'field-time',
     components: {
       Field
     },
@@ -62,8 +63,8 @@
 
         let min, max
 
-        min = this.min ? moment(mask(this.pattern, String(this.min)), 'HH:mm').format() : ''
-        max = this.max ? moment(mask(this.pattern, String(this.max)), 'HH:mm').format() : ''
+        min = parseTime(mask(this.pattern, String(this.min)), null, 'HH:mm')
+        max = parseTime(mask(this.pattern, String(this.max)), null, 'HH:mm')
 
         return {min, max, format24h}
       }
@@ -133,16 +134,22 @@
         this.model = this.value
       }
     },
-    name: 'field-time',
     watch: {
       value (value) {
+        if (!value) {
+          return
+        }
+        this.updated = false
         this.watchValue(value)
+      },
+      model (value) {
+        this.widget = parseTime(value, null, 'HH:mm')
       },
       widget (value) {
         if (!value) {
           return
         }
-        value = moment(value).local(true).format('HH:mm')
+        value = parseTime(value)
         this.applyValue(value)
         this.updateValue(value)
       }
