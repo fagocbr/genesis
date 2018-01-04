@@ -101,9 +101,6 @@
        * @param {*} value
        */
       applyValue (value) {
-        if (value === this.model) {
-          return
-        }
         this.$emit('event', 'selected', this, this.getObjects(this.model))
 
         if (!this.multiple) {
