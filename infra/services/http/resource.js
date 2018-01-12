@@ -139,7 +139,7 @@ export const destroy = (path, fixed = {}, http = null) => {
 const map = (value, label, more = {}) => {
   return (item) => {
     const reduce = (accumulate, key) => {
-      if (item[more[key]]) {
+      if (typeof item[more[key]] !== 'undefined') {
         accumulate[key] = item[more[key]]
       }
       return accumulate
