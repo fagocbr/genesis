@@ -170,6 +170,9 @@
   @import '~variables'
 
   .field-select
+    .input
+      height auto
+      min-height 37px
     .field-placeholder
       font-family Roboto
       font-size 13px
@@ -187,7 +190,8 @@
       top -1px
       background $field-button-background
       color $field-button-color
-      height 37px
+      min-height 37px
+      height 100%
       width 30px
     .q-if-disabled:before
       background none
