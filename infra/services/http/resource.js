@@ -1,4 +1,4 @@
-import http from 'genesis/infra/services/http/index'
+import HTTP from 'genesis/infra/services/http/index'
 import { Http } from 'genesis'
 
 /**
@@ -39,11 +39,15 @@ export const url = (base, uri, parameters) => {
 /**
  * @param {string} path
  * @param {Object} fixed
+ * @param {Object} http
  * @returns {Function}
  */
-export const create = (path, fixed = {}) => {
+export const create = (path, fixed = {}, http = null) => {
   if (typeof fixed !== 'object') {
     fixed = {}
+  }
+  if (!http) {
+    http = HTTP
   }
   /**
    * @param {object} data
@@ -59,11 +63,15 @@ export const create = (path, fixed = {}) => {
 /**
  * @param {string} path
  * @param {Object} fixed
+ * @param {Object} http
  * @returns {Function}
  */
-export const read = (path, fixed = {}) => {
+export const read = (path, fixed = {}, http = null) => {
   if (typeof fixed !== 'object') {
     fixed = {}
+  }
+  if (!http) {
+    http = HTTP
   }
   /**
    * @param {string} uri
@@ -78,11 +86,15 @@ export const read = (path, fixed = {}) => {
 /**
  * @param {string} path
  * @param {Object} fixed
+ * @param {Object} http
  * @returns {Function}
  */
-export const update = (path, fixed = {}) => {
+export const update = (path, fixed = {}, http = null) => {
   if (typeof fixed !== 'object') {
     fixed = {}
+  }
+  if (!http) {
+    http = HTTP
   }
   /**
    * @param {string} id
@@ -98,11 +110,15 @@ export const update = (path, fixed = {}) => {
 /**
  * @param {string} path
  * @param {Object} fixed
+ * @param {Object} http
  * @returns {Function}
  */
-export const destroy = (path, fixed = {}) => {
+export const destroy = (path, fixed = {}, http = null) => {
   if (typeof fixed !== 'object') {
     fixed = {}
+  }
+  if (!http) {
+    http = HTTP
   }
   /**
    * @param {object} path
@@ -115,16 +131,15 @@ export const destroy = (path, fixed = {}) => {
 }
 
 /**
- * @param {string} api - endpoint of api
- * @param {string} value - property what is the value in options
- * @param {string} label - property what is the label in options
- * @param {Object} more - properties do be mapped
- * @return {Function}
+ * @param {string} value
+ * @param {string} label
+ * @param {Object} more
+ * @return {function(*)}
  */
-export const source = (api, value, label, more = {}) => {
-  const map = (item) => {
+const map = (value, label, more = {}) => {
+  return (item) => {
     const reduce = (accumulate, key) => {
-      if (item[more[key]]) {
+      if (typeof item[more[key]] !== 'undefined') {
         accumulate[key] = item[more[key]]
       }
       return accumulate
@@ -136,20 +151,38 @@ export const source = (api, value, label, more = {}) => {
     }
     return Object.assign({}, base, others)
   }
-  const success = (response, callback) => {
-    const $body = Http.get('$body')
+}
 
-    const data = $body(response)
-    let source = []
-    if (Array.isArray(data)) {
-      source = data.map(map)
-    }
-    callback(source)
+/**
+ * @param response
+ * @param value
+ * @param label
+ * @param more
+ * @param callback
+ */
+export const success = (response, value, label, more, callback) => {
+  const $body = Http.get('$body')
+
+  const data = $body(response)
+  let source = []
+  if (Array.isArray(data)) {
+    source = data.map(item => map(value, label, more)(item))
   }
+  callback(source)
+}
+
+/**
+ * @param {string} api - endpoint of api
+ * @param {string} value - property what is the value in options
+ * @param {string} label - property what is the label in options
+ * @param {Object} more - properties do be mapped
+ * @return {Function}
+ */
+export const source = (api, value, label, more = {}) => {
   /**
    * @param {Function} callback
    */
-  return (callback) => read(api)('').then(response => success(response, callback))
+  return (callback) => read(api)('').then(response => success(response, value, label, more, callback))
 }
 
 /**

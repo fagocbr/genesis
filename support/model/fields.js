@@ -1,4 +1,5 @@
 import { get } from 'lodash'
+import { validators } from './validators'
 import {
   formatBoolean,
   formatDate,
@@ -18,7 +19,7 @@ export const _scopes = ['index', 'view', 'create', 'edit']
 /**
  * @type {Object}
  */
-export const standard = {
+const base = {
   field: '',
   label: '',
   scopes: [],
@@ -84,19 +85,6 @@ export const standard = {
   $pk () {
     this.primaryKey = true
     return this.$readonly().$out('create').$grid({width: '60px'})
-  },
-  $validate (rule, value = true) {
-    if (!this.form.validate) {
-      this.form.validate = {}
-    }
-    this.form.validate[rule] = value
-    return this
-  },
-  $required (require = true) {
-    if (require) {
-      this.$validate('required')
-    }
-    return this
   },
   $link (path) {
     this.grid.format = (value, row) => {
@@ -279,6 +267,8 @@ export const standard = {
     }
   }
 }
+
+export const standard = Object.assign(base, validators)
 
 /**
  * @param scopes
