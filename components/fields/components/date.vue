@@ -39,11 +39,11 @@
 </template>
 
 <script type="text/javascript">
-  import moment from 'moment'
   import { View } from 'genesis'
   import { VueMaskDirective } from 'v-mask'
   import Field from 'genesis/components/fields/components/base.vue'
   import FieldAbstract from 'genesis/components/fields/abstract'
+  import { parseDate } from 'genesis/support/format'
 
   export default {
     extends: FieldAbstract,
@@ -105,13 +105,8 @@
 
         let min, max
 
-        min = this.min ? moment(this.min).format() : ''
-        max = this.max ? max = moment(this.max).format() : ''
-
-        if (this.widget) {
-          min = min ? this.widget.replace(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, this.min) : ''
-          max = max ? this.widget.replace(/[0-9]{4}-[0-9]{2}-[0-9]{2}/g, this.max) : ''
-        }
+        min = parseDate(this.min, null)
+        max = parseDate(this.max, null)
 
         return {min, max, type, monthNames, dayNames, format24h}
       }
@@ -128,7 +123,8 @@
           value = String(value)
         }
         if (!this.updated) {
-          this.model = value.split('-').reverse().join('/')
+          this.model = parseDate(value)
+          this.widget = parseDate(value, null)
         }
         this.updated = false
       },
@@ -137,8 +133,13 @@
        */
       updateValue (value) {
         this.updated = true
-        this.$emit('input', value.split('/').reverse().join('-'), this.programmatically)
         this.programmatically = false
+
+        let date = parseDate(this.model, 'YYYY-MM-DD', 'DD/MM/YYYY')
+
+        this.$emit('input', date, this.programmatically)
+
+        this.widget = parseDate(date, null)
       },
       /**
        */
@@ -150,6 +151,7 @@
     },
     watch: {
       value (value) {
+        this.updated = false
         this.programmatically = true
         this.applyValue(value)
       },
@@ -157,7 +159,7 @@
         if (!value) {
           return
         }
-        value = moment(value).startOf('day').format('YYYY-MM-DD')
+        value = parseDate(value, 'YYYY-MM-DD')
         this.updated = false
         this.programmatically = false
         this.applyValue(value)

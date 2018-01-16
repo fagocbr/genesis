@@ -1,18 +1,60 @@
 import moment from 'moment'
-import { get } from 'lodash'
-import { money, mask } from 'genesis/support/utils'
+import get from 'lodash/get'
+import { mask, money } from 'genesis/support/utils'
+
+export const standardJSDATE = 'YYYY-MM-DDTHH:mm:ss.SSSZ'
+
+/**
+ * @param {string} value
+ * @param {null|string} format
+ * @returns {boolean}
+ */
+export const haveMinimumDateSize = (value, format = null) => {
+  return String(value).length >= 10
+  // return String(value).substring(0, 10).match(/^\d{4}-\d{2}-\d{2}$/)
+}
 
 /**
  * @param value
  * @param format
+ * @returns {boolean}
+ */
+export const haveMinimumTimeSize = (value, format = null) => {
+  return String(value).length >= 5
+}
+
+/**
+ * @param {string} value
+ * @param {string} format
+ * @param {null|string} origin
  * @return {string}
  */
-export const parseDate = (value, format = 'DD/MM/YYYY') => {
-  const date = moment(value)
+export const parseDate = (value, format = 'DD/MM/YYYY', origin = null) => {
+  if (!haveMinimumDateSize(value)) {
+    return ''
+  }
+  const date = origin ? moment(value, origin) : moment(value)
   if (!date.isValid()) {
     return ''
   }
-  return moment(value).format(format)
+  return format ? date.format(format) : date.format(standardJSDATE)
+}
+
+/**
+ * @param value
+ * @param format
+ * @param origin
+ * @returns {string}
+ */
+export const parseTime = (value, format = 'HH:mm', origin = null) => {
+  if (!haveMinimumTimeSize(value)) {
+    return ''
+  }
+  const time = origin ? moment(value, origin) : moment(value)
+  if (!time.isValid()) {
+    return ''
+  }
+  return format ? time.format(format) : time.format(standardJSDATE)
 }
 
 /**
@@ -21,6 +63,22 @@ export const parseDate = (value, format = 'DD/MM/YYYY') => {
  */
 export const formatDate = (value) => {
   return parseDate(value)
+}
+
+/**
+ * Mescla uma string com a outra. Ex.: value = "2018-10-107732123312" truncate = "test"   Result = test-10-107732123312
+ * @param {string} value
+ * @param {string} truncate
+ * @returns {*}
+ */
+export const truncateString = (value, truncate) => {
+  if (!(String(value).length >= String(truncate.length))) {
+    return truncate
+  }
+
+  let _substring = String(value).substring(String(truncate).length)
+
+  return truncate + _substring
 }
 
 /**
