@@ -4,7 +4,7 @@
       <div
         v-if="disabled"
         v-html="model"
-        class="disabled field input html">
+        :class="['disabled', 'field', border ? 'input' : '', 'html']">
       </div>
       <div v-else id="editor">
         <froala
@@ -30,6 +30,12 @@
     },
     computed: {
       ...mapGetters(['getAppHeight'])
+    },
+    props: {
+      border: {
+        type: Boolean,
+        default: () => true
+      }
     },
     data: () => ({
       model: '',
@@ -97,7 +103,7 @@
     .fr-toolbar
       border-top none
     .html
-      height 100px
+      height auto
       overflow hidden
       color #515151
       padding 9px 8px
