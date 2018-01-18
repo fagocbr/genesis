@@ -1,5 +1,6 @@
 <template>
-  <field :class="classNames" contenteditable="false" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+    <field :class="classNames" contenteditable="false"
+           v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component">
       <div
         v-if="disabled"
@@ -25,13 +26,15 @@
   import FieldAbstract from 'genesis/components/fields/abstract'
 
   export default {
+    extends: FieldAbstract,
+    name: 'field-wysiwyg',
     components: {
       Field
     },
-    computed: {
-      ...mapGetters(['getAppHeight'])
-    },
     props: {
+      placeholder: {
+        type: String
+      },
       border: {
         type: Boolean,
         default: () => true
@@ -70,12 +73,8 @@
         toolbarButtonsXS: ['undo', 'redo', '-', 'bold', 'italic', 'underline']
       }
     }),
-    extends: FieldAbstract,
-    name: 'field-wysiwyg',
-    mounted () {
-      if (this.value) {
-        this.model = this.value
-      }
+    computed: {
+      ...mapGetters(['getAppHeight'])
     },
     watch: {
       value () {
@@ -87,6 +86,11 @@
       model (value) {
         this.updated = true
         this.$emit('input', value)
+      }
+    },
+    mounted () {
+      if (this.value) {
+        this.model = this.value
       }
     }
   }
