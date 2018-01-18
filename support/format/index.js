@@ -1,5 +1,5 @@
 import moment from 'moment'
-import get from 'lodash/get'
+import { get } from 'lodash'
 import { mask, money } from 'genesis/support/utils'
 
 export const standardJSDATE = 'YYYY-MM-DDTHH:mm:ss.SSSZ'

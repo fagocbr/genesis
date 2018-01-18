@@ -1,4 +1,5 @@
 import * as Validators from 'vuelidate/lib/validators'
+import { fireEvent } from 'genesis/support/model/events'
 
 const arrayToObject = (accumulate, item) => {
   accumulate[item.field] = item
@@ -154,10 +155,8 @@ export default {
      * @param {string} event
      * @param {Object} parameters
      */
-    fireEvent (field, event, parameters = {}) {
-      if (this.schemas[field] && this.schemas[field].events && typeof this.schemas[field].events[event] === 'function') {
-        this.schemas[field].events[event](this.record, this.schemas, this, parameters)
-      }
+    fireEvent (field, event, parameters = {}, record = this.records, schemas = this.schemas) {
+      fireEvent(this.schemas, this.record, this, field, event, parameters)
     },
     /**
      */
