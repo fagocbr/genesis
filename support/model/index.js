@@ -49,7 +49,7 @@ export const grid = (service, path, id, schemas, filters, actions = null, option
  * @param {string} path
  * @param {string} id
  * @param {Array} schemas
- * @param {Array} actions
+ * @param {Array|Function} actions
  * @param {Object} options
  * @returns {Object}
  */
