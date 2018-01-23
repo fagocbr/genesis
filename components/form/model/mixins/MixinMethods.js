@@ -1,10 +1,8 @@
 import * as Validators from 'vuelidate/lib/validators'
 import { fireEvent } from 'genesis/support/model/events'
+import { reduce } from 'genesis/support/model/form'
+import { clone } from 'genesis/support/utils'
 
-const arrayToObject = (accumulate, item) => {
-  accumulate[item.field] = item
-  return accumulate
-}
 
 export default {
   methods: {
@@ -62,8 +60,18 @@ export default {
     updateComponents () {
       const components = {}
       if (this.tabs.length) {
+
+        const reduces = (tab) => {
+          return (accumulate, key) => {
+            if (this.schemas[key].tab === tab.name) {
+              accumulate.push(clone(this.schemas[key]))
+            }
+            return accumulate
+          }
+        }
+
         this.tabs.forEach(tab => {
-          components[tab.name] = this.fields.filter(field => field.tab === tab.name).reduce(arrayToObject, {})
+          components[tab.name] = Object.keys(this.schemas).reduce(reduces(tab), [])
         })
       }
       this.components = components
@@ -71,19 +79,19 @@ export default {
     /**
      */
     updateSchemas () {
-      this.schemas = this.fields.reduce(arrayToObject, {})
+      this.schemas = this.fields.reduce(reduce, {})
     },
     /**
      */
     updateRecord () {
-      const reduce = (accumulate, field) => {
+      const reduces = (accumulate, field) => {
         accumulate[field] = this.data[field] || this.schemas[field].default
         if (this.$route.query[field]) {
           accumulate[field] = this.$route.query[field]
         }
         return accumulate
       }
-      const record = Object.keys(this.schemas).reduce(reduce, {})
+      const record = Object.keys(this.schemas).reduce(reduces, {})
       this.setRecord(record)
     },
     /**
@@ -185,7 +193,7 @@ export default {
      * @param {string} namespace
      * @param {AxiosResponse} response
      */
-    fireWatch (namespace, response) {
+    fireWatch (namespace, response = {}) {
       if (this.watches[namespace] && typeof this.watches[namespace] === 'function') {
         this.watches[namespace](this.record, this.schemas, this, response)
       }

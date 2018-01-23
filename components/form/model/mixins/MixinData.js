@@ -3,7 +3,7 @@ export default {
     components: {},
     schemas: {},
     record: {},
-    tabSeletecd: '',
+    tabSelected: '',
     modified: false
   })
 }

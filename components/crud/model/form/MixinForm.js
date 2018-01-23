@@ -2,7 +2,7 @@ import { Data } from 'genesis'
 import { mapActions } from 'vuex'
 import { toast, undo } from 'genesis/support/message/index'
 import { wildcard } from 'genesis/support/utils/index'
-import { filter, map, sort } from 'genesis/support/model/fields'
+import { filter, map, sort } from 'genesis/support/model/form'
 
 export default {
   props: {
