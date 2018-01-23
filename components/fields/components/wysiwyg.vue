@@ -1,10 +1,11 @@
 <template>
-  <field :class="classNames" contenteditable="false" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+    <field :class="classNames" contenteditable="false"
+           v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component">
       <div
         v-if="disabled"
         v-html="model"
-        class="disabled field input html">
+        :class="['disabled', 'field', border ? 'input' : '', 'html']">
       </div>
       <div v-else id="editor">
         <froala
@@ -31,45 +32,47 @@
       Field
     },
     props: {
-      placeholder: String
-    },
-    data () {
-      return {
-        model: '',
-        updated: false,
-        config: {
-          placeholderText: this.placeholder,
-          height: this.getAppHeight - 200,
-          imageManagerLoadURL: URL_IMAGE_MANAGER,
-          imageUploadURL: URL_IMAGE_UPLOAD,
-          events: {
-            'froalaEditor.initialized' () {
-            }
-          },
-          language: 'pt_br',
-          imagePaste: true,
-          charCounterCount: true,
-          toolbarStickyOffset: 50,
-        height: this.getAppHeight - 200,
-          imageManagerPageSize: 20,
-        imageManagerLoadURL: URL_IMAGE_MANAGER,
-        imageUploadURL: URL_IMAGE_UPLOAD,
-          imageUploadParams: {
-            uid: uid(),
-            type: 'image'
-          },
-          // toolbarButtons: [
-          //   'undo', 'redo', '|',
-          //   'bold', 'italic', 'underline', 'strikeThrough', 'paragraphFormat', '|',
-          //   'subscript', 'superscript', '|',
-          //   'outdent', 'indent', '|',
-          //   'formatOL', 'formatUL', 'insertTable', 'insertLink', 'insertImage', '|',
-          //   'clearFormatting', 'html'
-          // ],
-          toolbarButtonsXS: ['undo', 'redo', '-', 'bold', 'italic', 'underline']
-        }
+      placeholder: {
+        type: String
+      },
+      border: {
+        type: Boolean,
+        default: () => true
       }
     },
+    data: () => ({
+      model: '',
+      updated: false,
+      config: {
+        events: {
+          'froalaEditor.initialized' () {
+            console.log('froalaEditor.initialized')
+          }
+        },
+        language: 'pt_br',
+        imagePaste: true,
+        charCounterCount: true,
+        placeholderText: 'test',
+        toolbarStickyOffset: 50,
+        height: this.getAppHeight - 200,
+        imageManagerPageSize: 20,
+        imageManagerLoadURL: URL_IMAGE_MANAGER,
+        imageUploadURL: URL_IMAGE_UPLOAD,
+        imageUploadParams: {
+          uid: uid(),
+          type: 'image'
+        },
+        // toolbarButtons: [
+        //   'undo', 'redo', '|',
+        //   'bold', 'italic', 'underline', 'strikeThrough', 'paragraphFormat', '|',
+        //   'subscript', 'superscript', '|',
+        //   'outdent', 'indent', '|',
+        //   'formatOL', 'formatUL', 'insertTable', 'insertLink', 'insertImage', '|',
+        //   'clearFormatting', 'html'
+        // ],
+        toolbarButtonsXS: ['undo', 'redo', '-', 'bold', 'italic', 'underline']
+      }
+    }),
     computed: {
       ...mapGetters(['getAppHeight'])
     },
@@ -104,7 +107,7 @@
     .fr-toolbar
       border-top none
     .html
-      height 100px
+      height auto
       overflow hidden
       color #515151
       padding 9px 8px

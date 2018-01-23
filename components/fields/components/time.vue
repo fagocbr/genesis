@@ -164,7 +164,7 @@
     .component
       position relative
       & > input
-        max-height 34px
+        height 37px
       & > .material-icons
         background $field-button-background
         color $field-button-color
@@ -172,7 +172,7 @@
         cursor pointer
         right 0
         top 0
-        padding 7px 10px
+        padding 8px 4px 9px 5px
         font-size 20px
         z-index 10
         border-radius 2px
@@ -180,8 +180,8 @@
         position absolute
         top 0
         right 0
-        width 38px
-        height 34px
+        width 28px
+        height 28px
         padding 0
         margin 0
         overflow hidden
