@@ -1,7 +1,7 @@
 <template>
   <div ref="wrapper" class="transition-slide" :style="{width: width, height: height}">
     <transition :name="transition">
-      <router-view class="router-view" title="" :key="key" :style="style"></router-view>
+      <router-view class="router-view" title="" :key="key" :style="style"/>
     </transition>
   </div>
 </template>
@@ -27,7 +27,7 @@
     },
     data: () => ({
       key: uid(),
-      transition: 'slide-left'
+      transition: '' // 'slide-left'
     }),
     computed: {
       style () {
@@ -42,6 +42,7 @@
     methods: {
       updateTransition (from, to) {
         this.key = uid()
+        /*
         if (from === to) {
           this.transition = ''
           return
@@ -49,6 +50,7 @@
         const fromDepth = String(from).split('/').length
         const toDepth = String(to).split('/').length
         this.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+        */
       }
     },
     created () {
