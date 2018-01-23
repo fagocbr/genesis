@@ -26,7 +26,7 @@ export const httpRequest = (request, cache) => {
     return request
   }
 
-  data.__fromCache = true
+  data.__fromCache = !process.env.DEV
   request.data = data
 
   request.adapter = () => {
