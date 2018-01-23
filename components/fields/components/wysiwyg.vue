@@ -1,6 +1,6 @@
 <template>
-    <field :class="classNames" contenteditable="false"
-           v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" contenteditable="false"
+         v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
     <div slot="component">
       <div
         v-if="disabled"
@@ -46,13 +46,12 @@
       config: {
         events: {
           'froalaEditor.initialized' () {
-            console.log('froalaEditor.initialized')
           }
         },
         language: 'pt_br',
         imagePaste: true,
         charCounterCount: true,
-        placeholderText: 'test',
+        placeholderText: '',
         toolbarStickyOffset: 50,
         height: this.getAppHeight - 200,
         imageManagerPageSize: 20,
@@ -87,6 +86,9 @@
         this.updated = true
         this.$emit('input', value)
       }
+    },
+    created () {
+      this.config.placeholderText = this.placeholder
     },
     mounted () {
       if (this.value) {
