@@ -11,6 +11,15 @@ export default {
         this.setRecord(record)
         this.fireWatch('set/record')
       }
+    },
+    /**
+     * @type {Observer}
+     */
+    schemas: {
+      handler () {
+        this.updateComponents()
+      },
+      deep: true
     }
   }
 }
