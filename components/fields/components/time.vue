@@ -30,7 +30,7 @@
   import { VueMaskDirective } from 'v-mask'
   import Field from 'genesis/components/fields/components/base.vue'
   import FieldAbstract from 'genesis/components/fields/abstract'
-  import { parseTime } from 'genesis/support/format'
+  import { formatTime } from 'genesis/support/format'
   import { mask, padLeft, padRight, unMask } from 'genesis/support/utils'
 
   export default {
@@ -63,8 +63,8 @@
 
         let min, max
 
-        min = parseTime(mask(this.pattern, String(this.min)), null, 'HH:mm')
-        max = parseTime(mask(this.pattern, String(this.max)), null, 'HH:mm')
+        min = formatTime(mask(this.pattern, String(this.min)), null, 'HH:mm')
+        max = formatTime(mask(this.pattern, String(this.max)), null, 'HH:mm')
 
         return {min, max, format24h}
       }
@@ -143,13 +143,13 @@
         this.watchValue(value)
       },
       model (value) {
-        this.widget = parseTime(value, null, 'HH:mm')
+        this.widget = formatTime(value, null, 'HH:mm')
       },
       widget (value) {
         if (!value) {
           return
         }
-        value = parseTime(value)
+        value = formatTime(value)
         this.applyValue(value)
         this.updateValue(value)
       }

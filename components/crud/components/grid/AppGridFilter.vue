@@ -12,8 +12,13 @@
     </div>
     <hr class="light">
     <div class="app-grid-filter-form form">
-      <component v-for="filter in filters" :key="filter.field" :is="filter.component"
-                 v-model="record[filter.field]" v-bind="filter"></component>
+      <component
+        v-for="filter in filters"
+        :key="filter.field"
+        :is="filter.component"
+        v-bind="filter"
+        v-model="record[filter.field]"
+      />
     </div>
     <hr>
     <div class="form">

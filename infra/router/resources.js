@@ -43,7 +43,6 @@ export const child = (path, namespace, props, uri, scope, component, meta = {}, 
  * @param {Function} form
  * @param {Object} meta
  * @param {string} id
- * @param {string} components
  * @returns {Array}
  */
 export const crud = (path, namespace, grid, form, meta, id = 'id') => {

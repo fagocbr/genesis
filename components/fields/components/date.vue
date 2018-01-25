@@ -43,7 +43,7 @@
   import { VueMaskDirective } from 'v-mask'
   import Field from 'genesis/components/fields/components/base.vue'
   import FieldAbstract from 'genesis/components/fields/abstract'
-  import { parseDate } from 'genesis/support/format'
+  import { formatDate } from 'genesis/support/format'
 
   export default {
     extends: FieldAbstract,
@@ -105,8 +105,8 @@
 
         let min, max
 
-        min = parseDate(this.min, null)
-        max = parseDate(this.max, null)
+        min = formatDate(this.min, null)
+        max = formatDate(this.max, null)
 
         return {min, max, type, monthNames, dayNames, format24h}
       }
@@ -123,8 +123,8 @@
           value = String(value)
         }
         if (!this.updated) {
-          this.model = parseDate(value)
-          this.widget = parseDate(value, null)
+          this.model = formatDate(value)
+          this.widget = formatDate(value, null)
         }
         this.updated = false
       },
@@ -135,11 +135,11 @@
         this.updated = true
         this.programmatically = false
 
-        let date = parseDate(this.model, 'YYYY-MM-DD', 'DD/MM/YYYY')
+        let date = formatDate(this.model, 'YYYY-MM-DD', 'DD/MM/YYYY')
 
         this.$emit('input', date, this.programmatically)
 
-        this.widget = parseDate(date, null)
+        this.widget = formatDate(date, null)
       },
       /**
        */
@@ -159,7 +159,7 @@
         if (!value) {
           return
         }
-        value = parseDate(value, 'YYYY-MM-DD')
+        value = formatDate(value, 'YYYY-MM-DD')
         this.updated = false
         this.programmatically = false
         this.applyValue(value)

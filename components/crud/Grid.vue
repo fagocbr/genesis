@@ -31,7 +31,7 @@
       <app-button-bar v-bind="{floating: true, handler, buttons: buttons.floating}"/>
     </slot>
 
-    <slot v-if="filtering" name="filter"></slot>
+    <slot v-if="filtering" name="filter"/>
 
     <q-modal ref="filter" position="right" :content-css="filter.css">
       <app-grid-filter v-if="search" :filters="filter.columns" :record="filter.record"

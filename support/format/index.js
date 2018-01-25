@@ -9,7 +9,7 @@ export const standardJSDATE = 'YYYY-MM-DDTHH:mm:ss.SSSZ'
  * @param {null|string} format
  * @returns {boolean}
  */
-export const haveMinimumDateSize = (value, format = null) => {
+const haveMinimumDateSize = (value, format = null) => {
   return String(value).length >= 10
   // return String(value).substring(0, 10).match(/^\d{4}-\d{2}-\d{2}$/)
 }
@@ -19,25 +19,8 @@ export const haveMinimumDateSize = (value, format = null) => {
  * @param format
  * @returns {boolean}
  */
-export const haveMinimumTimeSize = (value, format = null) => {
+const haveMinimumTimeSize = (value, format = null) => {
   return String(value).length >= 5
-}
-
-/**
- * @param {string} value
- * @param {string} format
- * @param {null|string} origin
- * @return {string}
- */
-export const parseDate = (value, format = 'DD/MM/YYYY', origin = null) => {
-  if (!haveMinimumDateSize(value)) {
-    return ''
-  }
-  const date = origin ? moment(value, origin) : moment(value)
-  if (!date.isValid()) {
-    return ''
-  }
-  return format ? date.format(format) : date.format(standardJSDATE)
 }
 
 /**
@@ -46,7 +29,7 @@ export const parseDate = (value, format = 'DD/MM/YYYY', origin = null) => {
  * @param origin
  * @returns {string}
  */
-export const parseTime = (value, format = 'HH:mm', origin = null) => {
+export const formatTime = (value, format = 'HH:mm', origin = null) => {
   if (!haveMinimumTimeSize(value)) {
     return ''
   }
@@ -58,27 +41,33 @@ export const parseTime = (value, format = 'HH:mm', origin = null) => {
 }
 
 /**
- * @param value
+ * @param {string} value
+ * @param {string} format
+ * @param {null|string} origin
  * @return {string}
  */
-export const formatDate = (value) => {
-  return parseDate(value)
+const parseDate = (value, format = 'DD/MM/YYYY', origin = null) => {
+  if (!haveMinimumDateSize(value)) {
+    return ''
+  }
+  const date = origin ? moment(value, origin) : moment(value)
+  if (!date.isValid()) {
+    return ''
+  }
+  return format ? date.format(format) : date.format(standardJSDATE)
 }
 
 /**
- * Mescla uma string com a outra. Ex.: value = "2018-10-107732123312" truncate = "test"   Result = test-10-107732123312
  * @param {string} value
- * @param {string} truncate
- * @returns {*}
+ * @param {string} format
+ * @param {null|string} origin
+ * @return {string}
  */
-export const truncateString = (value, truncate) => {
-  if (!(String(value).length >= String(truncate.length))) {
-    return truncate
+export const formatDate = (value, format = 'DD/MM/YYYY', origin = null) => {
+  if (typeof format === 'object') {
+    return parseDate(value)
   }
-
-  let _substring = String(value).substring(String(truncate).length)
-
-  return truncate + _substring
+  return parseDate(value, format, origin)
 }
 
 /**
@@ -173,15 +162,15 @@ export const formatEnumType = (index, type) => {
 
   switch (type) {
     case '1':
-      return formatNumber(index)
+      return parseNumber(index)
     case 'A':
-      return formatAlphanumericUpper(index)
+      return parseAlphanumericUpper(index)
     case 'a':
-      return formatAlphanumericLower(index)
+      return parseAlphanumericLower(index)
     case 'I':
-      return formatRomanUpper(index)
+      return parseRomanUpper(index)
     case 'i':
-      return formatRomanLower(index)
+      return parseRomanLower(index)
     default:
       return NaN
   }
@@ -190,7 +179,7 @@ export const formatEnumType = (index, type) => {
 /**
  * Format a index to lower alphanumeric caracter EX.:(0 => a, 1 => b, 2 => c)
  */
-const formatAlphanumericLower = (index) => {
+const parseAlphanumericLower = (index) => {
   return String.fromCharCode(97 + index)
 }
 
@@ -200,7 +189,7 @@ const formatAlphanumericLower = (index) => {
  * @param index
  * @returns {string}
  */
-const formatAlphanumericUpper = (index) => {
+const parseAlphanumericUpper = (index) => {
   return String.fromCharCode(65 + index)
 }
 
@@ -209,7 +198,7 @@ const formatAlphanumericUpper = (index) => {
  * @param index
  * @returns {string}
  */
-const formatNumber = (index) => {
+const parseNumber = (index) => {
   return String(++index)
 }
 
@@ -218,8 +207,8 @@ const formatNumber = (index) => {
  * @param index
  * @returns {string}
  */
-const formatRomanUpper = (index) => {
-  index = formatNumber(index)
+const parseRomanUpper = (index) => {
+  index = parseNumber(index)
 
   const lookup = {M: 1000, CM: 900, D: 500, CD: 400, C: 100, XC: 90, L: 50, XL: 40, X: 10, IX: 9, V: 5, IV: 4, I: 1}
   let roman = ''
@@ -237,8 +226,8 @@ const formatRomanUpper = (index) => {
  * @param index
  * @returns {*}
  */
-const formatRomanLower = (index) => {
-  return String(formatRomanUpper(index)).toLowerCase()
+const parseRomanLower = (index) => {
+  return String(parseRomanUpper(index)).toLowerCase()
 }
 
 /**

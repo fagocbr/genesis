@@ -16,7 +16,7 @@
         <div v-else class="counter">Exibindo {{ counter.end }} registros</div>
       </div>
     </template>
-    <div :class="['field',  $g.get(toolbar, 'show', true) ? 'has-40' : 'has-100']">
+    <div :class="buttonsClassNames">
       <app-button-bar v-bind="{buttons, handler, direction}"/>
     </div>
   </div>
@@ -112,6 +112,15 @@
           return infoClassName
         }
         return 'has-20 hidden-small'
+      },
+      buttonsClassNames () {
+        if (!this.paginate) {
+          return ['field', 'has-100']
+        }
+        if (this.$g.get(this.toolbar, 'show', true)) {
+          return ['field', 'has-40']
+        }
+        return ['field', 'has-100']
       }
     },
     data: () => ({

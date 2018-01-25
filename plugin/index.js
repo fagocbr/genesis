@@ -3,6 +3,17 @@ import { get, set } from 'lodash'
 import { Events } from 'quasar-framework'
 import router from 'genesis/infra/router'
 import { uniqid } from 'genesis/support/utils'
+import {
+  formatBoolean,
+  formatDate,
+  formatDateTime,
+  formatEnumType,
+  formatHighLight,
+  formatMoney,
+  formatPhone,
+  formatOptions,
+  formatTime
+} from 'genesis/support/format'
 
 /**
  * @param {string} path
@@ -67,7 +78,23 @@ const off = (name) => Events.$off(name)
 const emit = (name, parameters) => Events.$emit(name, parameters)
 
 const genesis = {
-  get, set, browse, on, off, emit
+  get,
+  set,
+  browse,
+  on,
+  off,
+  emit,
+  $f: {
+    boolean: formatBoolean,
+    date: formatDate,
+    dateTime: formatDateTime,
+    enumType: formatEnumType,
+    highLight: formatHighLight,
+    money: formatMoney,
+    phone: formatPhone,
+    options: formatOptions,
+    time: formatTime
+  }
 }
 
 /**

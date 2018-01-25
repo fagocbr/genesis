@@ -231,3 +231,19 @@ export const storage = (values = {}) => {
     }
   }
 }
+
+/**
+ * Mescla uma string com a outra. Ex.: value = "2018-10-107732123312" truncate = "test"   Result = test-10-107732123312
+ * @param {string} value
+ * @param {string} truncate
+ * @returns {*}
+ */
+export const truncateString = (value, truncate) => {
+  if (!(String(value).length >= String(truncate.length))) {
+    return truncate
+  }
+
+  let _substring = String(value).substring(String(truncate).length)
+
+  return truncate + _substring
+}
