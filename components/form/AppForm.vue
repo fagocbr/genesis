@@ -21,10 +21,10 @@
 
 <script type="text/javascript">
   import { validationMixin as validation } from 'vuelidate'
-  import { data, methods, props, watch } from './model'
+  import { data, methods, props, watch, tabsNavigation } from './model'
 
   export default {
-    mixins: [validation, data, methods, props, watch],
+    mixins: [validation, data, methods, props, watch, tabsNavigation],
     name: 'app-form',
     validations () {
       const validations = this.generateValidations(this.fields)

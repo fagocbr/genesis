@@ -36,7 +36,7 @@
   import AppForm from 'genesis/components/form/AppForm.vue'
   import AppButtonBar from 'genesis/components/button/AppButtonBar.vue'
   import MixinNavigation from 'genesis/components/@mixins/MixinNavigation'
-  import { MixinComputed, MixinData, MixinMethods, MixinProps } from './model'
+  import { MixinComputed, MixinData, MixinMethods, MixinProps, MixinFormNavigation } from './model'
   import { MixinForm } from './model/form'
 
   /**
@@ -45,7 +45,7 @@
    */
   const AppCrudForm = {
     mixins: [
-      MixinComputed, MixinData, MixinMethods, MixinProps, MixinNavigation, MixinForm
+      MixinComputed, MixinData, MixinMethods, MixinProps, MixinNavigation, MixinForm, MixinFormNavigation
     ],
     name: 'app-crud-form',
     components: {

@@ -5,3 +5,5 @@ export { default as methods } from './mixins/MixinMethods'
 export { default as props } from './mixins/MixinProps'
 
 export { default as watch } from './mixins/MixinWatch'
+
+export { default as tabsNavigation } from './mixins/MixinTabsNavigation'

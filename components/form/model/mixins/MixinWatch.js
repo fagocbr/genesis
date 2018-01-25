@@ -20,6 +20,18 @@ export default {
         this.updateComponents()
       },
       deep: true
+    },
+    tabSelected (value, old) {
+      this.fireWatch('change/tabSelected', {
+        'new': {
+          index: this.getIndexTab(value),
+          name: value
+        },
+        'old' : {
+          index: this.getIndexTab(old),
+          name: old
+        }
+      })
     }
   }
 }
