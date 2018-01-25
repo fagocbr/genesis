@@ -4,6 +4,7 @@ export { default as MixinComputed } from 'genesis/components/crud/model/general/
 export { default as MixinData } from 'genesis/components/crud/model/general/MixinData'
 export { default as MixinMethods } from 'genesis/components/crud/model/general/MixinMethods'
 export { default as MixinProps } from 'genesis/components/crud/model/general/MixinProps'
+export { default as MixinFormNavigation } from 'genesis/components/crud/model/general/MixinFormNavigation'
 
 /**
  * @param {Vue} $this
