@@ -124,9 +124,8 @@
         }
         if (!this.updated) {
           this.model = formatDate(value)
-          this.widget = formatDate(value, null)
         }
-        this.updated = false
+        this.updated = true
       },
       /**
        * @param {*} value
@@ -135,11 +134,10 @@
         this.updated = true
         this.programmatically = false
 
-        let date = formatDate(this.model, 'YYYY-MM-DD', 'DD/MM/YYYY')
-
-        this.$emit('input', date, this.programmatically)
-
-        this.widget = formatDate(date, null)
+        this.$emit('input', value, this.programmatically)
+      },
+      updateWidget (value) {
+        this.widget = formatDate(value, false)
       },
       /**
        */
@@ -153,15 +151,19 @@
       value (value) {
         this.updated = false
         this.programmatically = true
+        if (String(value).match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/g)) {
+          value = formatDate(value, 'YYYY-MM-DD', 'DD/MM/YYYY')
+        }
+
         this.applyValue(value)
+        this.updateWidget(value, true)
+        this.programmatically = false
       },
       widget (value) {
         if (!value) {
           return
         }
         value = formatDate(value, 'YYYY-MM-DD')
-        this.updated = false
-        this.programmatically = false
         this.applyValue(value)
         this.updateValue(value)
       }
