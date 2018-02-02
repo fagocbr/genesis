@@ -1,8 +1,8 @@
 <template>
   <div class="field-base" v-show="visible">
     <slot name="label">
-      <div v-if="label" class="field-base-label">
-        <label :for="id" v-if="!inline" class="field-label" :class="{'label-with-error': problems.length}">
+      <div v-if="!inline" class="field-base-label">
+        <label :for="id" v-if="label" class="field-label" :class="{'label-with-error': problems.length}">
           {{ label }} <span v-if="!!validate" :title="title">*</span>
           <app-tooltip v-if="tooltip">
             <span v-html="tooltip"></span>
@@ -10,9 +10,9 @@
         </label>
       </div>
     </slot>
-    <slot name="component"></slot>
+    <slot name="component"/>
     <slot name="error">
-      <div v-if="label" class="field-base-error">
+      <div v-if="!inline" class="field-base-error">
         <div v-if="showError" class="text-right error-message">
           <span v-for="problem in problems">{{ $t(problem.path, problem.parameters) }}</span>
           <i class="material-icons" @click="showErrors">help_outline</i>

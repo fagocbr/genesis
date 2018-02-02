@@ -1,17 +1,43 @@
 <template>
   <div class="app-button-bar" :style="style" :class="{'fixed-bottom-right': floating}">
     <template v-if="!floating || buttons.length === 1">
-      <q-button v-if="permissionCheck(button, record)" v-for="button in buttons" :key="button.id" v-bind="button"
-                @click="handler(button)" class="button-default">
-        <app-tooltip :disable="!button.tooltip" :anchor="button.anchor" :self="button.self"
-                     :offset="button.offset">{{ button.tooltip }}</app-tooltip>
+      <q-button
+        v-for="button in buttons"
+        :key="button.id"
+        v-if="permissionCheck(button, record)"
+        v-show="!button.hidden"
+        v-bind="button"
+        @click="handler(button)"
+        class="button-default"
+      >
+        <app-tooltip
+          :disable="!button.tooltip"
+          :anchor="button.anchor"
+          :self="button.self"
+          :offset="button.offset"
+        >
+          {{ button.tooltip }}
+        </app-tooltip>
       </q-button>
     </template>
     <template v-else-if="buttons.length > 0">
       <q-fab color="primary" icon="add" direction="up">
-        <q-fab-action v-if="permissionCheck(button, record)" v-for="button in buttons" :key="button.id"
-                      @click="handler(button)" :color="button.color" :icon="button.icon" class="rotate">
-          <app-tooltip :anchor="'center left'" :self="'center right'" :offset="[10, 10]" :disabled="!button.tooltip">
+        <q-fab-action
+          v-for="button in buttons"
+          :key="button.id"
+          v-if="permissionCheck(button, record)"
+          v-show="!button.hidden"
+          @click="handler(button)"
+          :color="button.color"
+          :icon="button.icon"
+          class="rotate"
+        >
+          <app-tooltip
+            :anchor="'center left'"
+            :self="'center right'"
+            :offset="[10, 10]"
+            :disabled="!button.tooltip"
+          >
             {{ button.tooltip }}
           </app-tooltip>
         </q-fab-action>

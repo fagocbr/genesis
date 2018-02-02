@@ -87,6 +87,12 @@ export default {
      */
     classNames () {
       const classNames = []
+      if (this.className.length) {
+        classNames.push(this.className)
+      }
+      if (this.inline) {
+        classNames.push('field-inline')
+      }
       const width = 'field has-' + String(this.inline ? '100' : this.width)
       classNames.push(width)
       classNames.push(this.$options.name)

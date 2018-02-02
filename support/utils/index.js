@@ -163,12 +163,22 @@ export const promise = executor => new Promise(executor)
  * @param {boolean} entropy
  * @returns {string}
  */
+export const hashKey = (prefix = '', entropy = false) => {
+  return uniqid(prefix, entropy)
+}
+
+/**
+ * @param {string} prefix
+ * @param {boolean} entropy
+ * @returns {string}
+ */
 export const uniqid = (prefix = '', entropy = false) => {
   let result
   this.seed = (s, w) => {
     s = parseInt(s, 10).toString(16)
     return w < s.length ? s.slice(s.length - w) : (w > s.length) ? new Array(1 + (w - s.length)).join('0') + s : s
   }
+  // noinspection JSCheckFunctionSignatures
   const start = this.seed(parseInt(new Date().getTime() / 1000, 10), 8)
   const end = this.seed(Math.floor(Math.random() * 0x75bcd15) + 1, 5)
   result = prefix + start + end
@@ -205,12 +215,12 @@ export const storage = (values = {}) => {
     values: Object.assign({}, values),
     /**
      * @param {string} property
-     * @param {Object} values
+     * @param {*} values
      * @returns this
      */
-    set (property, value) {
+    set (property, values) {
       // console.log('|~> set', property)
-      set(this.values, property, value)
+      set(this.values, property, values)
       return this
     },
     /**
@@ -222,7 +232,7 @@ export const storage = (values = {}) => {
       return get(this.values, property)
     },
     /**
-     * @param {Object} values
+     * @param {*} values
      * @returns this
      */
     attach (values) {

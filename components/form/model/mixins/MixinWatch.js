@@ -15,6 +15,16 @@ export default {
     /**
      * @type {Observer}
      */
+    fields: {
+      handler () {
+        this.updateSchemas()
+        this.updateRecord()
+      },
+      deep: true
+    },
+    /**
+     * @type {Observer}
+     */
     schemas: {
       handler () {
         this.updateComponents()

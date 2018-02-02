@@ -147,6 +147,9 @@ export default {
     },
     data (current, previous) {
       this.renderActions()
+    },
+    schemas () {
+      this.renderAll()
     }
   },
   created () {

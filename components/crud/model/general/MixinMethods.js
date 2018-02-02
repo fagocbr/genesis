@@ -125,6 +125,24 @@ export default {
       if (typeof action.handler === 'function') {
         action.handler(this.data, this.fields, this, action)
       }
+    },
+    /**
+     * @param {string} id
+     * @param {Object} options
+     */
+    button (id, options) {
+      const forEach = position => {
+        if (!Array.isArray(this.buttons[position])) {
+          return
+        }
+        this.buttons[position] = this.buttons[position].map(button => {
+          if (button.id === id) {
+            button = Object.assign({}, button, options)
+          }
+          return button
+        })
+      }
+      Object.keys(this.buttons).forEach(forEach)
     }
   }
 }
