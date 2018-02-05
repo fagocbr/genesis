@@ -1,20 +1,52 @@
 <template>
   <div class="app-form">
 
-    <div v-if="tabs.length" class="tabs">
-      <q-tabs v-model="tabSelected" inverted>
-        <q-tab v-for="tab in tabs" :key="tab.name" slot="title" v-bind="tab"/>
+    <div
+      v-if="tabs.length"
+      class="tabs"
+    >
+      <q-tabs
+        v-model="tabSelected"
+        inverted
+      >
+        <q-tab
+          v-for="tab in tabs"
+          :key="tab.name"
+          slot="title"
+          v-bind="tab"
+        />
       </q-tabs>
-      <div class="tab-content form" v-for="tab in tabs" v-show="tab.name === tabSelected">
-        <component v-for="schema in components[tab.name]" :key="schema.field" :is="schema.component"
-                   v-bind="schema" v-model="record[schema.field]"
-                   @input="formInput(schema.field, arguments)" @event="formEvent"/>
+      <div
+        class="tab-content form"
+        v-for="tab in tabs"
+        v-show="tab.name === tabSelected"
+      >
+        <template v-for="schema in components[tab.name]">
+          <component
+            :is="schema.component"
+            :key="schema.field"
+            v-bind="schema"
+            v-model="record[schema.field]"
+            @input="formInput(schema.field, arguments)"
+            @event="formEvent"
+          />
+        </template>
       </div>
     </div>
-    <div v-else class="form">
-      <component v-for="schema in schemas" :key="schema.field" :is="schema.component"
-                 v-bind="schema" v-model="record[schema.field]"
-                 @input="formInput(schema.field, arguments)" @event="formEvent"/>
+    <div
+      v-else
+      class="form"
+    >
+      <template v-for="schema in schemas">
+        <component
+          :is="schema.component"
+          :key="schema.field"
+          v-bind="schema"
+          v-model="record[schema.field]"
+          @input="formInput(schema.field, arguments)"
+          @event="formEvent"
+        />
+      </template>
     </div>
   </div>
 </template>

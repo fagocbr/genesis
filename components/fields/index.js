@@ -19,3 +19,5 @@ export { default as FieldToggle } from './components/toggle.vue'
 export { default as FieldWysiwyg } from './components/wysiwyg.vue'
 
 export { default as FieldFunctional } from './functional'
+
+export { props } from './features'

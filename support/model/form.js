@@ -1,3 +1,5 @@
+import { props } from 'genesis/components/fields/index'
+
 /**
  * @param scope
  * @returns {function(*): (boolean|*)}
@@ -44,17 +46,14 @@ export const sort = (a, b) => {
  * @return {*}
  */
 export const reduce = (accumulate, item) => {
-  const base = {
-    field: '',
-    component: '',
-    label: '',
-    tab: '',
-    width: 100,
-    order: undefined,
-    events: {},
-    hidden: false,
-    disabled: false,
-  }
+  const base = Object.keys(props).reduce((accumulate, key) => {
+    let value = props[key].default
+    if (typeof value === 'function') {
+      value = value()
+    }
+    accumulate[key] = value
+    return accumulate
+  }, {})
   accumulate[item.field] = Object.assign({}, base, item)
   return accumulate
 }

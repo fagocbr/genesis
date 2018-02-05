@@ -60,7 +60,6 @@ export default {
     updateComponents () {
       const components = {}
       if (this.tabs.length) {
-
         const reduces = (tab) => {
           return (accumulate, key) => {
             if (this.schemas[key].tab === tab.name) {
@@ -69,7 +68,6 @@ export default {
             return accumulate
           }
         }
-
         this.tabs.forEach(tab => {
           components[tab.name] = Object.keys(this.schemas).reduce(reduces(tab), [])
         })
