@@ -95,6 +95,16 @@ export default {
       this.setRecord(record)
     },
     /**
+     */
+    synchronizeRecord () {
+      Object.keys(this.schemas).forEach(key => {
+        if (typeof this.data[key] !== 'undefined') {
+          return
+        }
+        this.$set(this.data, key, this.schemas[key].default)
+      })
+    },
+    /**
      * @param {Object} record
      * @returns this
      */
@@ -163,8 +173,13 @@ export default {
      * @param {string} event
      * @param {Object} parameters
      */
-    fireEvent (field, event, parameters = {}, record = this.records, schemas = this.schemas) {
-      fireEvent(this.schemas, this.record, this, field, event, parameters)
+    fireEvent (field, event, parameters = {}) {
+      try {
+        fireEvent(this.schemas, this.record, this, field, event, parameters)
+      }
+      catch (e) {
+        console.error(e)
+      }
     },
     /**
      */
@@ -195,7 +210,12 @@ export default {
      */
     fireWatch (namespace, response = {}) {
       if (this.watches[namespace] && typeof this.watches[namespace] === 'function') {
-        this.watches[namespace](this.record, this.schemas, this, response)
+        try {
+          this.watches[namespace](this.record, this.schemas, this, response)
+        }
+        catch (e) {
+          console.error(e)
+        }
       }
     }
   }

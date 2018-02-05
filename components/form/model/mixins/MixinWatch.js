@@ -18,7 +18,7 @@ export default {
     fields: {
       handler () {
         this.updateSchemas()
-        this.updateRecord()
+        this.synchronizeRecord()
       },
       deep: true
     },
@@ -26,11 +26,15 @@ export default {
      * @type {Observer}
      */
     schemas: {
-      handler () {
+      handler (schemas) {
         this.updateComponents()
       },
       deep: true
     },
+    /**
+     * @param {string} value
+     * @param {string} old
+     */
     tabSelected (value, old) {
       this.fireWatch('change/tabSelected', {
         'new': {

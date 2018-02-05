@@ -148,8 +148,16 @@ export default {
     data (current, previous) {
       this.renderActions()
     },
-    schemas () {
-      this.renderAll()
+    fields: {
+      handler () {
+      },
+      deep: true
+    },
+    schemas: {
+      handler () {
+        this.renderAll()
+      },
+      deep: true
     }
   },
   created () {

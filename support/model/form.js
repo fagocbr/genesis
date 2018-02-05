@@ -44,6 +44,17 @@ export const sort = (a, b) => {
  * @return {*}
  */
 export const reduce = (accumulate, item) => {
-  accumulate[item.field] = item
+  const base = {
+    field: '',
+    component: '',
+    label: '',
+    tab: '',
+    width: 100,
+    order: undefined,
+    events: {},
+    hidden: false,
+    disabled: false,
+  }
+  accumulate[item.field] = Object.assign({}, base, item)
   return accumulate
 }
