@@ -106,8 +106,8 @@
 
         let min, max
 
-        min = formatDate(this.min, null)
-        max = formatDate(this.max, null)
+        min = formatDate(this.min, false)
+        max = formatDate(this.max, false)
 
         return {min, max, type, monthNames, dayNames, format24h}
       }
