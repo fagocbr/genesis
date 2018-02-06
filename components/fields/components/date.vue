@@ -11,7 +11,8 @@
             :okLabel="okLabel"
             :cancelLabel="cancelLabel"
             :clearLabel="clearLabel"
-            v-bind="bind"></q-datetime>
+            v-bind="bind"
+          />
 
           <input ref="input" class="input full-width" autocomplete="off"
                  v-mask="pattern"
