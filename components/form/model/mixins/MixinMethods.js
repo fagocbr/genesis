@@ -77,7 +77,17 @@ export default {
     /**
      */
     updateSchemas () {
-      this.schemas = this.fields.reduce(reduce, {})
+      if (!Object.keys(this.schemas).length) {
+        this.schemas = this.fields.reduce(reduce, {})
+        return
+      }
+      const map = item => {
+        if (typeof this.schemas[item.field] !== 'undefined') {
+          return Object.assign({}, item, this.schemas[item.field])
+        }
+        return item
+      }
+      this.schemas = this.fields.map(map).reduce(reduce, {})
     },
     /**
      */
