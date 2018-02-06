@@ -18,7 +18,7 @@
                  v-mask="pattern"
                  v-model="model" v-bind="{id, name, placeholder, maxlength, disabled}"
                  @keypress="keypress" @keyup="keyup" @blur="blur" @focus="focus" @keydown.enter.stop.prevent="enter"
-                 @input="updateValue($event.target.value)"/>
+                 @input="updateValue(model, format)"/>
           <div class="input-bar"></div>
 
         </template>
@@ -58,7 +58,7 @@
     props: {
       type: {
         type: String,
-        default: () => 'date'
+        default: 'date'
       },
       min: {
         type: String
@@ -94,6 +94,7 @@
       pattern: '##/##/####',
       model: '',
       format: 'YYYY-MM-DD',
+      modelFormat: 'DD/MM/YYYY',
       monthNames: '', // View.get('locales.date.month')
       dayNames: '' // View.get('locales.date.days.week')
     }),
@@ -131,11 +132,10 @@
       /**
        * @param {*} value
        */
-      updateValue (value) {
+      updateValue (value, format = undefined) {
         this.updated = true
         this.programmatically = false
-
-        this.$emit('input', value, this.programmatically)
+        this.emit(value, format)
       },
       updateWidget (value) {
         this.widget = formatDate(value, false)
@@ -146,15 +146,27 @@
         if (!this.disabled) {
           this.$refs.widget.open()
         }
+      },
+      emit (value, format = undefined) {
+        if (typeof format !== 'undefined') {
+          value = formatDate(value, format, this.modelFormat)
+        }
+        if (this.value !== value) {
+          this.$emit('input', value, this.programmatically)
+        }
+      },
+      convert (value) {
+        if (String(value).match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/g)) {
+          value = formatDate(value, this.format, this.modelFormat)
+        }
+
+        return formatDate(value, this.format)
       }
     },
     watch: {
       value (value) {
         this.updated = false
         this.programmatically = true
-        if (String(value).match(/[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/g)) {
-          value = formatDate(value, 'YYYY-MM-DD', 'DD/MM/YYYY')
-        }
 
         this.applyValue(value)
         this.updateWidget(value, true)
@@ -164,7 +176,7 @@
         if (!value) {
           return
         }
-        value = formatDate(value, 'YYYY-MM-DD')
+        value = this.convert(value)
         this.applyValue(value)
         this.updateValue(value)
       }
@@ -175,7 +187,7 @@
     },
     mounted () {
       this.programmatically = true
-      this.applyValue(this.value)
+      this.applyValue(this.convert(this.value))
     }
   }
 </script>

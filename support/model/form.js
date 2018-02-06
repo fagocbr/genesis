@@ -46,7 +46,11 @@ export const sort = (a, b) => {
  * @return {*}
  */
 export const reduce = (accumulate, item) => {
+  const excluded = ['validate', 'type']
   const base = Object.keys(props).reduce((accumulate, key) => {
+    if (excluded.includes(key)) {
+      return accumulate
+    }
     let value = props[key].default
     if (typeof value === 'function') {
       value = value()
