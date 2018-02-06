@@ -74,7 +74,8 @@
       updated: false,
       pattern: '##:##',
       model: '',
-      maxlength: 5
+      maxlength: 5,
+      programmatically: true
     }),
     directives: {
       'mask': VueMaskDirective
@@ -91,7 +92,12 @@
        */
       updateValue (value) {
         this.updated = true
-        this.$emit('input', Number(unMask(this.pattern, value)), this)
+        const emited = Number(unMask(this.pattern, value))
+        const val = this.value
+
+        if ((emited !== val)) {
+          this.$emit('input', emited, this)
+        }
       },
       /**
        * @param {int} value
@@ -130,13 +136,14 @@
       }
     },
     mounted () {
-      if (this.value) {
-        this.model = this.value
+      if (typeof this.value !== 'undefined') {
+        this.updated = false
+        this.watchValue(this.value)
       }
     },
     watch: {
       value (value) {
-        if (!value) {
+        if (typeof value === 'undefined') {
           return
         }
         this.updated = false
