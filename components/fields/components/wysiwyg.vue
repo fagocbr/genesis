@@ -7,21 +7,21 @@
         v-html="model"
         :class="['disabled', 'field', border ? 'input' : '', 'html']">
       </div>
-      <div v-else id="editor">
-        <froala
+      <div v-else>
+        <tiny-mce
           v-model="model"
-          :tag="'textarea'"
-          :config="config" />
+          :api-key="apiKey"
+          :cloud-channel="'dev'"
+          :init="init"
+          @onPostRender="onPostRender"
+        />
       </div>
     </div>
   </field>
 </template>
 
 <script type="text/javascript">
-  import { uid } from 'quasar-framework'
-  import { mapGetters } from 'vuex'
-  import { URL_IMAGE_MANAGER, URL_IMAGE_UPLOAD } from 'genesis/support/index'
-  import 'vue-froala-wysiwyg'
+  import TinyMCE from '@tinymce/tinymce-vue'
   import Field from 'genesis/components/fields/components/base.vue'
   import FieldAbstract from 'genesis/components/fields/abstract'
 
@@ -29,66 +29,80 @@
     extends: FieldAbstract,
     name: 'field-wysiwyg',
     components: {
-      Field
+      Field,
+      'tiny-mce': TinyMCE
     },
     props: {
-      placeholder: {
-        type: String
+      apiKey: {
+        type: String,
+        default: 'vho5426hnv6nehaqnf0hv97vb1yygzuntvnaw4mzxaa10cwt'
       },
-      border: {
-        type: Boolean,
-        default: () => true
+      url: {
+        type: String,
+        default: ''
+      },
+      timeout: {
+        type: Number,
+        default:  1000
+      },
+      init: {
+        type: Object,
+        default () {
+          return {
+            language_url: '/statics/languages/pt_BR.js',
+            selector: 'textarea',
+            height: 300,
+            theme: 'modern',
+            // imagetools codesample template anchor
+            plugins: 'print code preview fullpage searchreplace autolink directionality visualblocks visualchars ' +
+            'fullscreen image link media table charmap hr pagebreak nonbreaking toc ' +
+            'insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern help',
+            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter ' +
+            'alignright alignjustify | numlist bullist outdent indent | removeformat',
+            templates: [],
+            image_advtab: true,
+            images_upload_url: this.url,
+            /* init_instance_callback: editor => { editor.execCommand('mceImage') }, */
+            content_css: []
+          }
+        }
       }
     },
     data: () => ({
-      model: '',
-      updated: false,
-      config: {
-        events: {
-          'froalaEditor.initialized' () {
-          }
-        },
-        language: 'pt_br',
-        imagePaste: true,
-        charCounterCount: true,
-        placeholderText: '',
-        toolbarStickyOffset: 50,
-        height: this.getAppHeight - 200,
-        imageManagerPageSize: 20,
-        imageManagerLoadURL: URL_IMAGE_MANAGER,
-        imageUploadURL: URL_IMAGE_UPLOAD,
-        imageUploadParams: {
-          uid: uid(),
-          type: 'image'
-        },
-        // toolbarButtons: [
-        //   'undo', 'redo', '|',
-        //   'bold', 'italic', 'underline', 'strikeThrough', 'paragraphFormat', '|',
-        //   'subscript', 'superscript', '|',
-        //   'outdent', 'indent', '|',
-        //   'formatOL', 'formatUL', 'insertTable', 'insertLink', 'insertImage', '|',
-        //   'clearFormatting', 'html'
-        // ],
-        toolbarButtonsXS: ['undo', 'redo', '-', 'bold', 'italic', 'underline']
-      }
+      ready: false,
+      model: ''
     }),
-    computed: {
-      ...mapGetters(['getAppHeight'])
-    },
-    watch: {
-      value () {
-        if (!this.updated) {
-          this.model = this.value
-          this.updated = false
+    methods: {
+      /**
+       */
+      onPostRender () {
+        this.ready = true
+        if (this.model !== this.value) {
+          this.$nextTick()
         }
       },
-      model (value) {
-        this.updated = true
-        this.$emit('input', value)
+      /**
+       * @param value
+       * @return {number}
+       */
+      updateModel (value) {
+        if (!this.ready) {
+          // console.log('~> wysiwyg.updateModel.retry')
+          return window.setTimeout(e => this.updateModel(value), this.timeout)
+        }
+        // console.log('~> wysiwyg.updateModel.finish')
+        this.model = value
       }
     },
-    created () {
-      this.config.placeholderText = this.placeholder
+    watch: {
+      value (value) {
+        this.updateModel(value)
+      },
+      model (model) {
+        if (this.value !== model) {
+          this.$emit('input', model)
+        }
+      }
     },
     mounted () {
       if (this.value) {
@@ -100,23 +114,17 @@
 
 <style lang="stylus" rel="stylesheet/stylus">
   .field-wysiwyg
-    .fr-wrapper
-      min-height 300px
     small
       color #bdbdbd
     textarea
-      min-height 100px
-    .fr-toolbar
-      border-top none
+      display none
+    .mce-container .mce-txt
+      font-size 12px !important
+      font-family Roboto !important
     .html
       height auto
       overflow hidden
       color #515151
       padding 9px 8px
-      font-family Roboto
       font-size 14.4px
-
-  .production
-    .fr-wrapper > div:first-child
-      display none
 </style>

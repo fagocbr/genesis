@@ -304,9 +304,6 @@
     },
     mounted () {
       this.applyValue(this.value)
-    },
-    created () {
-      console.log('~> created')
     }
   }
 </script>
