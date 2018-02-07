@@ -29,9 +29,15 @@
     },
     name: 'field-file',
     props: {
+      handler: {
+        type: Function,
+        default: (response) => {
+          return response.path
+        }
+      },
       downloadUrl: {
         type: String,
-        default: () => ' pay l ncu'
+        default: () => ''
       },
       file: {
         type: String,
@@ -96,8 +102,7 @@
       uploaded (file, xhr) {
         let path = ''
         try {
-          const response = JSON.parse(xhr.response)
-          path = response.path
+          path = this.handler(JSON.parse(xhr.response))
         }
         catch (e) {
           return
