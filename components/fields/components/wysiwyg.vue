@@ -4,11 +4,12 @@
     <div slot="component">
       <div
         v-if="disabled"
-        v-html="model"
+        v-html="value"
         :class="['disabled', 'field', border ? 'input' : '', 'html']">
       </div>
       <div v-else>
         <tiny-mce
+          v-if="active"
           v-model="model"
           :api-key="apiKey"
           :cloud-channel="'dev'"
@@ -33,6 +34,10 @@
       'tiny-mce': TinyMCE
     },
     props: {
+      border: {
+        type: Boolean,
+        default: () => true
+      },
       apiKey: {
         type: String,
         default: 'vho5426hnv6nehaqnf0hv97vb1yygzuntvnaw4mzxaa10cwt'
@@ -69,6 +74,7 @@
       }
     },
     data: () => ({
+      active: true,
       ready: false,
       model: ''
     }),
@@ -78,7 +84,9 @@
       onPostRender () {
         this.ready = true
         if (this.model !== this.value) {
-          this.$nextTick()
+          this.active = false
+          this.model = this.value
+          window.setTimeout(e => this.active = true, 500)
         }
       },
       /**
@@ -87,10 +95,8 @@
        */
       updateModel (value) {
         if (!this.ready) {
-          // console.log('~> wysiwyg.updateModel.retry')
-          return window.setTimeout(e => this.updateModel(value), this.timeout)
+          return
         }
-        // console.log('~> wysiwyg.updateModel.finish')
         this.model = value
       }
     },
