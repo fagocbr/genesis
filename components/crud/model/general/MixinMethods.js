@@ -107,9 +107,13 @@ export default {
           return button
         })
 
+      // noinspection JSCheckFunctionSignatures
       this.buttons.top = buttons.filter(button => button.positions.includes('top'))
+      // noinspection JSCheckFunctionSignatures
       this.buttons.middle = buttons.filter(button => button.positions.includes('middle'))
+      // noinspection JSCheckFunctionSignatures
       this.buttons.bottom = buttons.filter(button => button.positions.includes('bottom'))
+      // noinspection JSCheckFunctionSignatures
       this.buttons.floating = buttons.filter(button => button.positions.includes('floating'))
     },
     /**
@@ -123,7 +127,7 @@ export default {
      */
     handler (action) {
       if (typeof action.handler === 'function') {
-        action.handler(this.data, this.fields, this, action)
+        action.handler(this.data, this.$refs.form.schemas, this, action)
       }
     },
     /**
