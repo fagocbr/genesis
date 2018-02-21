@@ -10,12 +10,12 @@
     <hr v-if="top">
     <slot name="content">
       <component :is="content" ref="form" v-bind="{tabs, tab, fields, data, readonly, change, watches, debug}"
-                @form~input="input" @form~valid="valid"/>
+                @form~input="input" @form~valid="valid" @form~button="button"/>
     </slot>
     <hr v-if="bottom">
 
     <slot v-if="bottom" name="bottom">
-      <app-button-bar :buttons="buttons.top" :handler="handler" :direction="direction" :record="data"/>
+      <app-button-bar :buttons="buttons.bottom" :handler="handler" :direction="direction" :record="data"/>
     </slot>
 
     <slot name="footer"/>

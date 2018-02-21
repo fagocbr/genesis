@@ -1,6 +1,6 @@
 import { Http } from 'genesis'
 import { loading } from 'genesis/support/message/index'
-import { PATH_LOGIN } from 'genesis/support/index'
+import { PATH_UNAUTHORIZED } from 'genesis/support/index'
 import { default as http, install } from 'genesis/infra/services/http'
 import Cache from 'js-cache'
 
@@ -47,9 +47,13 @@ export const interceptors = (http, store, router, cache) => {
    */
   const error = (error) => {
     loading(false)
+
     const {response} = error
-    if (response && [401, 402].indexOf(response.status) > -1) {
-      router.push(PATH_LOGIN)
+    if (!response) {
+      router.push(PATH_UNAUTHORIZED)
+    }
+    if ([401, 402].indexOf(response.status) > -1) {
+      router.push(PATH_UNAUTHORIZED)
     }
     return Promise.reject(httpError(error, router, store))
   }

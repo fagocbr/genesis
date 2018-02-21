@@ -225,6 +225,9 @@ export default {
           console.error(e)
         }
       }
+    },
+    button (id, options) {
+      this.$emit('form~button', id, options)
     }
   }
 }

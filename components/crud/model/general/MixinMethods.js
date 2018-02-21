@@ -2,6 +2,7 @@
 import { get } from 'lodash'
 import { actions } from '../../model'
 import { setDotNotation } from 'genesis/support/transform'
+import { clone } from 'genesis/support/utils'
 
 export default {
   methods: {
@@ -98,23 +99,26 @@ export default {
       if (!Array.isArray(_actions)) {
         return
       }
-      const buttons = _actions
-        .filter(button => button.scopes && button.scopes.includes(this.scope))
-        .map(button => {
-          if (typeof button.validate === 'function') {
-            button.disabled = button.validate(this.record, this.schemas, this)
-          }
-          return button
-        })
+
+      if (!this.operations) {
+        this.operations = _actions
+          .filter(button => button.scopes && button.scopes.includes(this.scope))
+          .map(button => {
+            if (typeof button.validate === 'function') {
+              button.disabled = button.validate(this.record, this.schemas, this)
+            }
+            return button
+          })
+      }
 
       // noinspection JSCheckFunctionSignatures
-      this.buttons.top = buttons.filter(button => button.positions.includes('top'))
+      this.buttons.top = this.operations.filter(button => button.positions.includes('top'))
       // noinspection JSCheckFunctionSignatures
-      this.buttons.middle = buttons.filter(button => button.positions.includes('middle'))
+      this.buttons.middle = this.operations.filter(button => button.positions.includes('middle'))
       // noinspection JSCheckFunctionSignatures
-      this.buttons.bottom = buttons.filter(button => button.positions.includes('bottom'))
+      this.buttons.bottom = this.operations.filter(button => button.positions.includes('bottom'))
       // noinspection JSCheckFunctionSignatures
-      this.buttons.floating = buttons.filter(button => button.positions.includes('floating'))
+      this.buttons.floating = this.operations.filter(button => button.positions.includes('floating'))
     },
     /**
      */
@@ -135,18 +139,17 @@ export default {
      * @param {Object} options
      */
     button (id, options) {
-      const forEach = position => {
-        if (!Array.isArray(this.buttons[position])) {
+      if (!Array.isArray(this.operations)) {
+        return
+      }
+      const forEach = (operation, index) => {
+        if (operation.id !== id) {
           return
         }
-        this.buttons[position] = this.buttons[position].map(button => {
-          if (button.id === id) {
-            button = Object.assign({}, button, options)
-          }
-          return button
-        })
+        this.operations[index] = Object.assign({}, this.operations[index], options)
       }
-      Object.keys(this.buttons).forEach(forEach)
+      this.operations.forEach(forEach)
+      this.renderActions()
     }
   }
 }

@@ -182,6 +182,7 @@
       z-index 10
       top 10px
       left 8px
+      width 90%
     .q-select-container
       position relative
     .q-if-control

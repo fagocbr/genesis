@@ -5,6 +5,7 @@ export default {
       middle: [],
       bottom: [],
       floating: []
-    }
+    },
+    operations: null
   })
 }
