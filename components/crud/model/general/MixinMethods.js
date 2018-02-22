@@ -141,7 +141,7 @@ export default {
      * @param {Object} options
      */
     button (id, options) {
-      this.operations[id] = options
+      this.operations[id] = Object.assign({}, this.operations[id], options)
       this.renderActions()
     }
   }
