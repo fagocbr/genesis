@@ -6,6 +6,6 @@ export default {
       bottom: [],
       floating: []
     },
-    operations: null
+    operations: {}
   })
 }

@@ -100,25 +100,27 @@ export default {
         return
       }
 
-      if (!this.operations) {
-        this.operations = _actions
-          .filter(button => button.scopes && button.scopes.includes(this.scope))
-          .map(button => {
-            if (typeof button.validate === 'function') {
-              button.disabled = button.validate(this.record, this.schemas, this)
-            }
-            return button
-          })
-      }
+      const buttons = _actions
+        .filter(button => button.scopes && button.scopes.includes(this.scope))
+        .map(button => {
+          if (typeof button.validate === 'function') {
+            button.disabled = button.validate(this.record, this.schemas, this)
+          }
+          const id = button.id
+          if (this.operations[id]) {
+            button = Object.assign({}, button, this.operations[id])
+          }
+          return button
+        })
 
       // noinspection JSCheckFunctionSignatures
-      this.buttons.top = this.operations.filter(button => button.positions.includes('top'))
+      this.buttons.top = buttons.filter(button => button.positions.includes('top'))
       // noinspection JSCheckFunctionSignatures
-      this.buttons.middle = this.operations.filter(button => button.positions.includes('middle'))
+      this.buttons.middle = buttons.filter(button => button.positions.includes('middle'))
       // noinspection JSCheckFunctionSignatures
-      this.buttons.bottom = this.operations.filter(button => button.positions.includes('bottom'))
+      this.buttons.bottom = buttons.filter(button => button.positions.includes('bottom'))
       // noinspection JSCheckFunctionSignatures
-      this.buttons.floating = this.operations.filter(button => button.positions.includes('floating'))
+      this.buttons.floating = buttons.filter(button => button.positions.includes('floating'))
     },
     /**
      */
@@ -131,7 +133,7 @@ export default {
      */
     handler (action) {
       if (typeof action.handler === 'function') {
-        action.handler(this.data, this.$refs.form.schemas, this, action)
+        action.handler(this.data, this.$refs.form ? this.$refs.form.schemas : this.schemas, this, action)
       }
     },
     /**
@@ -139,16 +141,7 @@ export default {
      * @param {Object} options
      */
     button (id, options) {
-      if (!Array.isArray(this.operations)) {
-        return
-      }
-      const forEach = (operation, index) => {
-        if (operation.id !== id) {
-          return
-        }
-        this.operations[index] = Object.assign({}, this.operations[index], options)
-      }
-      this.operations.forEach(forEach)
+      this.operations[id] = options
       this.renderActions()
     }
   }
