@@ -49,13 +49,19 @@ export const interceptors = (http, store, router, cache) => {
     loading(false)
 
     const {response} = error
-    if (!response) {
-      router.push(PATH_UNAUTHORIZED)
+
+    const abort = response =>  {
+      if (!response) {
+        router.push(PATH_UNAUTHORIZED)
+        return true
+      }
+      if ([401, 402].indexOf(response.status) > -1) {
+        router.push(PATH_UNAUTHORIZED)
+        return true
+      }
+      return false
     }
-    if ([401, 402].indexOf(response.status) > -1) {
-      router.push(PATH_UNAUTHORIZED)
-    }
-    return Promise.reject(httpError(error, router, store))
+    return Promise.reject(httpError(error, router, store, abort(response)))
   }
 
   http.interceptors.response.use(response, error)
