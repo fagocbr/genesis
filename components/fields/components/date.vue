@@ -6,12 +6,12 @@
           <i class="material-icons" :class="{'disabled': disabled}" @click="openWidget">&#xE878;</i>
 
           <q-datetime
-            ref="widget"
-            v-model="widget"
-            :okLabel="okLabel"
-            :cancelLabel="cancelLabel"
-            :clearLabel="clearLabel"
-            v-bind="bind"
+                  ref="widget"
+                  v-model="widget"
+                  :okLabel="okLabel"
+                  :cancelLabel="cancelLabel"
+                  :clearLabel="clearLabel"
+                  v-bind="bind"
           />
 
           <input ref="input" class="input full-width" autocomplete="off"
@@ -26,8 +26,8 @@
         <template v-else>
           <div class="row justify-center">
             <q-inline-datetime
-              v-model="widget"
-              v-bind="bind">
+                    v-model="widget"
+                    v-bind="bind">
             </q-inline-datetime>
           </div>
         </template>
@@ -40,11 +40,11 @@
 </template>
 
 <script type="text/javascript">
-  import { View } from 'genesis'
-  import { VueMaskDirective } from 'v-mask'
+  import {View} from 'genesis'
+  import {VueMaskDirective} from 'v-mask'
   import Field from 'genesis/components/fields/components/base.vue'
   import FieldAbstract from 'genesis/components/fields/abstract'
-  import { formatDate } from 'genesis/support/format'
+  import {formatDate} from 'genesis/support/format'
 
   export default {
     extends: FieldAbstract,
@@ -125,7 +125,7 @@
           value = String(value)
         }
         if (!this.updated) {
-          this.model = formatDate(value)
+          this.model = formatDate(value, this.modelFormat)
         }
         this.updated = true
       },
@@ -138,7 +138,7 @@
         this.emit(value, format)
       },
       updateWidget (value) {
-        this.widget = formatDate(value, false)
+        this.widget = this.convert(value)
       },
       /**
        */
