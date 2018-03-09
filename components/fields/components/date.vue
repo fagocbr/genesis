@@ -103,14 +103,14 @@
         return this.model
       },
       bind () {
-        const {type, monthNames, dayNames, format24h} = this
+        const {type, monthNames, dayNames, format24h, disabled} = this
 
         let min, max
 
         min = formatDate(this.min, false)
         max = formatDate(this.max, false)
 
-        return {min, max, type, monthNames, dayNames, format24h}
+        return {min, max, type, monthNames, dayNames, format24h, disable: disabled}
       }
     },
     methods: {
@@ -131,6 +131,7 @@
       },
       /**
        * @param {*} value
+       * @param format
        */
       updateValue (value, format = undefined) {
         this.updated = true
@@ -224,6 +225,8 @@
         margin 0
         padding 0
         box-shadow none
+        .q-input-target
+          color transparent
     .html
       height 38px
       color #515151

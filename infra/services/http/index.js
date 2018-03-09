@@ -32,6 +32,26 @@ export const create = (baseURL = '', headers = {}) => {
 export const http = create()
 
 /**
+ * @param http
+ * @return {Promise<AxiosResponse<any>>}
+ */
+async function env(http) {
+  return await axios
+    .create()
+    .get('statics/env.json')
+    .then(response => {
+      const env = response.data
+      if (typeof env !== 'object') {
+        return
+      }
+      http.defaults.baseURL = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.PATH
+      console.warn('~> http.defaults.baseURL', http.defaults.baseURL)
+    })
+}
+// noinspection JSIgnoredPromiseFromCall
+env(http)
+
+/**
  * @returns {Axios}
  */
 export const install = () => {
