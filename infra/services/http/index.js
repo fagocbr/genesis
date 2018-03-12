@@ -50,6 +50,7 @@ async function env(http) {
 }
 
 if (process.env.STAGE) {
+  console.warn('~> process.env.STAGE', true)
   // noinspection JSIgnoredPromiseFromCall
   env(http)
 }
