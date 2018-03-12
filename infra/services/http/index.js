@@ -48,8 +48,11 @@ async function env(http) {
       console.warn('~> http.defaults.baseURL', http.defaults.baseURL)
     })
 }
-// noinspection JSIgnoredPromiseFromCall
-env(http)
+
+if (process.env.STAGE) {
+  // noinspection JSIgnoredPromiseFromCall
+  env(http)
+}
 
 /**
  * @returns {Axios}
