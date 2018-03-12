@@ -49,8 +49,8 @@ async function env(http) {
     })
 }
 
-if (process.env.STAGE) {
-  console.warn('~> process.env.STAGE', true)
+console.warn('~> process.env.STAGING', process.env.STAGING)
+if (process.env.STAGING === window.location.hostname) {
   // noinspection JSIgnoredPromiseFromCall
   env(http)
 }
