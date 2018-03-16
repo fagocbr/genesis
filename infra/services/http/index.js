@@ -1,7 +1,7 @@
 import axios from 'axios'
 import canceler from 'axios-cancel'
 import { Auth } from 'genesis'
-import { URL_API } from 'genesis/support'
+import { URL_API, URL_HOME } from 'genesis/support'
 import { loading } from 'genesis/support/message'
 
 import configure from './configure'
@@ -31,6 +31,8 @@ export const create = (baseURL = '', headers = {}) => {
  */
 export const http = create()
 
+http.HOME = URL_HOME
+
 /**
  * @param http
  * @return {Promise<AxiosResponse<any>>}
@@ -45,11 +47,10 @@ async function env(http) {
         return
       }
       http.defaults.baseURL = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.PATH
-      console.warn('~> http.defaults.baseURL', http.defaults.baseURL)
+      http.HOME = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.HOME
     })
 }
 
-console.warn('~> process.env.STAGING', process.env.STAGING)
 if (process.env.STAGING) {
   // noinspection JSIgnoredPromiseFromCall
   env(http)

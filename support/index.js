@@ -33,9 +33,11 @@ export const PATH_HOME = routes.HOME
 /**
  * API settings
  */
-const api = env.API
+const uri = env.URI
 
-export const URL_API = api.PROTOCOL + '://' + api.DOMAIN + (api.PORT ? ':' + api.PORT : '') + api.PATH
+export const URL_API = uri.PROTOCOL + '://' + uri.DOMAIN + (uri.PORT ? ':' + uri.PORT : '') + uri.API
+
+export const URL_HOME = uri.PROTOCOL + '://' + uri.DOMAIN + (uri.PORT ? ':' + uri.PORT : '') + uri.HOME
 
 export const URL_IMAGE_MANAGER = URL_API + '/image/manager'
 

@@ -1,5 +1,5 @@
 // noinspection ES6CheckImport
-import { get, set } from 'lodash'
+import { get, set, isEqual } from 'lodash'
 import { Events } from 'quasar-framework'
 import router from 'genesis/infra/router'
 import { uniqid } from 'genesis/support/utils'
@@ -73,28 +73,92 @@ const params = (path, params) => {
   return Object.keys(params).reduce(reduce, path)
 }
 
+/**
+ * @param name
+ * @param callback
+ * @return {*|void}
+ */
 const on = (name, callback) => Events.$on(name, callback)
+
+/**
+ * @param name
+ * @return {*|void}
+ */
 const off = (name) => Events.$off(name)
+
+/**
+ * @param name
+ * @param parameters
+ * @return {*|void}
+ */
 const emit = (name, parameters) => Events.$emit(name, parameters)
 
+/**
+ * @param value
+ * @return {boolean}
+ */
+const is = (value) => {
+  if (Array.isArray(value)) {
+    return !!value.length
+  }
+  if (typeof value === 'object') {
+    return !!Object.keys(value).length
+  }
+  return !!value
+}
+
+/**
+ * @param value
+ * @param other
+ * @return {boolean}
+ */
+const equal = (value, other) => isEqual(value, other)
+
+/**
+ * @param id
+ * @param $this
+ * @return {*|Vue|Element}
+ */
+const ref = (id, $this) => {
+  const refs = $this.$refs[id]
+  if (!Array.isArray(refs)) {
+    return
+  }
+  if (!refs.length) {
+    return
+  }
+  return refs[0]
+}
+
+/**
+ * @type {Object}
+ */
 const genesis = {
   get,
   set,
   browse,
+  params,
   on,
   off,
   emit,
-  $f: {
-    boolean: formatBoolean,
-    date: formatDate,
-    dateTime: formatDateTime,
-    enumType: formatEnumType,
-    highLight: formatHighLight,
-    money: formatMoney,
-    phone: formatPhone,
-    options: formatOptions,
-    time: formatTime
-  }
+  is,
+  equal,
+  ref
+}
+
+/**
+ * @type {Object}
+ */
+const format = {
+  boolean: formatBoolean,
+  date: formatDate,
+  dateTime: formatDateTime,
+  enumType: formatEnumType,
+  highLight: formatHighLight,
+  money: formatMoney,
+  phone: formatPhone,
+  options: formatOptions,
+  time: formatTime
 }
 
 /**
@@ -105,6 +169,11 @@ export default Vue => {
   Object.defineProperty(Vue.prototype, '$g', {
     get () {
       return genesis
+    }
+  })
+  Object.defineProperty(Vue.prototype, '$f', {
+    get () {
+      return format
     }
   })
 }
