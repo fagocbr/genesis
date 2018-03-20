@@ -46,7 +46,7 @@ async function env(http) {
       if (typeof env !== 'object') {
         return
       }
-      http.defaults.baseURL = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.PATH
+      http.defaults.baseURL = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.API
       http.HOME = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.HOME
     })
 }
