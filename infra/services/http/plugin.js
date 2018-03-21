@@ -53,7 +53,7 @@ export const interceptors = (http, store, router, cache) => {
     const abort = response =>  {
       console.error('~> http.error', error, response)
       if (!response) {
-        return true
+        return false
       }
       if ([401, 402].indexOf(response.status) > -1) {
         router.push(PATH_UNAUTHORIZED)
