@@ -51,6 +51,7 @@ export const interceptors = (http, store, router, cache) => {
     const {response} = error
 
     const abort = response =>  {
+      console.error('~> http.error', error, response)
       if (!response) {
         return true
       }
