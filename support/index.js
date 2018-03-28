@@ -24,8 +24,6 @@ const routes = env.ROUTES
 
 export const PATH_LOGIN = routes.LOGIN
 
-export const PATH_UNAUTHORIZED = Object.assign({}, routes.LOGIN, {query: {status: '401'}})
-
 export const PATH_NO_ACCESS = routes.NO_ACCESS
 
 export const PATH_HOME = routes.HOME
