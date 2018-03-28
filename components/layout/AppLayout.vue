@@ -19,20 +19,10 @@
           </q-toolbar-title>
         </slot>
 
-        <slot name="header-content"></slot>
+        <slot name="header-content"/>
 
-        <q-btn flat @click="">
-          <q-icon name="more_vert"></q-icon>
-          <q-popover ref="popover" class="q-popover-menu">
-            <q-list item-separator highlight link>
-              <!--suppress CommaExpressionJS -->
-              <q-item v-for="(menu, index) in getDashboardOptions" :key="index" @click="handlerMenu(menu)" separator>
-                <q-item-side :color="menu.color" :icon="menu.icon"></q-item-side>
-                <q-item-main>{{ menu.label }}</q-item-main>
-              </q-item>
-            </q-list>
-          </q-popover>
-        </q-btn>
+        <app-layout-menu :options="getDashboardOptions" :handler="handlerMenu"/>
+
       </slot>
     </q-toolbar>
 
@@ -44,19 +34,19 @@
         </div>
       </slot>
       <slot name="drawer-left">
-        <app-drawer-menu :menus="AppMenu" :shadow="shadow"></app-drawer-menu>
+        <app-drawer-menu :menus="AppMenu" :shadow="shadow"/>
       </slot>
     </q-scroll-area>
 
     <slot name="breadcrumb">
       <div class="breadcrumb-wrapper">
-        <app-breadcrumb v-bind="{icon: home, displayIcon: displayIcon}"></app-breadcrumb>
+        <app-breadcrumb v-bind="{icon: home, displayIcon: displayIcon}"/>
       </div>
     </slot>
 
     <slot name="content">
       <div class="transition-wrapper">
-        <app-transition-slide v-bind="style"></app-transition-slide>
+        <app-transition-slide v-bind="style"/>
       </div>
     </slot>
   </q-layout>
@@ -68,10 +58,11 @@
   import AppBreadcrumb from 'genesis/components/breadcrumb/AppBreadcrumb.vue'
   import AppDrawerMenu from 'genesis/components/layout/drawer/DrawerMenu.vue'
   import AppTransitionSlide from 'genesis/components/transition/AppTransitionSlide.vue'
+  import AppLayoutMenu from 'genesis/components/layout/AppLayoutMenu.vue'
 
   export default {
     components: {
-      AppBreadcrumb, AppDrawerMenu, AppTransitionSlide
+      AppBreadcrumb, AppDrawerMenu, AppTransitionSlide, AppLayoutMenu
     },
     name: 'app-layout',
     props: {
@@ -147,11 +138,14 @@
       ...mapGetters(['AppName', 'AppTooltip', 'AppMenu', 'getDashboardOptions'])
     },
     methods: {
+      /**
+       * @param {Object} menu
+       */
       handlerMenu (menu) {
         menu.handler(this)
-        // noinspection JSUnresolvedVariable
-        this.$refs.popover.close()
       },
+      /**
+       */
       toggleLeft () {
         if (this.left) {
           this.$refs.layout.toggleLeft()
