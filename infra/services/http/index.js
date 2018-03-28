@@ -27,7 +27,7 @@ export const create = (baseURL = '', headers = {}) => {
 }
 
 /**
- * @type {Axios}
+ * @type {AxiosInstance}
  */
 export const http = create()
 
@@ -57,7 +57,7 @@ if (process.env.STAGING) {
 }
 
 /**
- * @returns {Axios}
+ * @returns {AxiosInstance}
  */
 export const install = () => {
   configure(http)

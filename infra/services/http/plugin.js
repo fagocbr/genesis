@@ -1,6 +1,5 @@
 import { Http } from 'genesis'
 import { loading } from 'genesis/support/message/index'
-import { PATH_UNAUTHORIZED } from 'genesis/support/index'
 import { default as http, install } from 'genesis/infra/services/http'
 import Cache from 'js-cache'
 
@@ -21,6 +20,7 @@ export const interceptors = (http, store, router, cache) => {
   const request = (request) => {
     // noinspection JSUnresolvedVariable
     if (!request.noLoading) {
+      // open loading
       loading(true, 100)
     }
     return httpRequest(request, cache)
@@ -32,6 +32,7 @@ export const interceptors = (http, store, router, cache) => {
    * @returns {*}
    */
   const response = (response) => {
+    // close loading
     loading(false)
     // noinspection JSUnresolvedVariable
     if (response.headers && response.headers.authorization) {
@@ -46,22 +47,33 @@ export const interceptors = (http, store, router, cache) => {
    * @returns {Promise<any> | Promise.<*>}
    */
   const error = (error) => {
+    // close loading
     loading(false)
+
+    /**
+     * Parse status of response on error
+     * @param {*} response
+     * @return {int}
+     */
+    const status = response =>  {
+      // response with unknown error
+      if (error.config && error.config.requestId) {
+        return 403
+      }
+      // The route where request was started was leaved, all requests was canceled
+      if (!response) {
+        return 0
+      }
+      // Handle with full error in request
+      if ([401, 403].indexOf(response.status) > -1) {
+        return response.status
+      }
+      return 0
+    }
 
     const {response} = error
 
-    const abort = response =>  {
-      console.error('~> http.error', error, response)
-      if (!response) {
-        return false
-      }
-      if ([401, 402].indexOf(response.status) > -1) {
-        router.push(PATH_UNAUTHORIZED)
-        return true
-      }
-      return false
-    }
-    return Promise.reject(httpError(error, router, store, abort(response)))
+    return Promise.reject(httpError(error, router, store, status(response)))
   }
 
   http.interceptors.response.use(response, error)
