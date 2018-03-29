@@ -34,7 +34,7 @@
         </div>
       </slot>
       <slot name="drawer-left">
-        <app-drawer-menu :menus="AppMenu" :shadow="shadow"/>
+        <app-drawer-menu :menus="menus" :shadow="shadow"/>
       </slot>
     </q-scroll-area>
 
@@ -134,6 +134,12 @@
       },
       style () {
         return this.$q.platform.is.mobile ? this.mobile : this.viewport
+      },
+      menus () {
+        if (!Array.isArray(this.AppMenu)) {
+          return []
+        }
+        return this.AppMenu
       },
       ...mapGetters(['AppName', 'AppTooltip', 'AppMenu', 'getDashboardOptions'])
     },
