@@ -203,6 +203,7 @@ class Resource {
    * @param {Object} fixed
    */
   constructor (path, fixed) {
+    this.path = path
     this.post = create(path, fixed)
     this.get = read(path, fixed)
     this.put = update(path, fixed)
