@@ -32,9 +32,7 @@ const actions = {
   setAuthToken: (store, token) => {
     store.commit(CHANGE_TOKEN, token)
     set(APP_TOKEN, token, store.getters.getAuthRemember)
-    if (token) {
-      setToken(token)
-    }
+    setToken(token)
   }
 }
 
