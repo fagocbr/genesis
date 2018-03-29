@@ -29,7 +29,9 @@ export const registerUser = (user, success = () => ({})) => {
 export const unRegister = (success) => {
   return promise((resolve, reject) => {
     const solver = () => {
-      success()
+      if (typeof success === 'function') {
+        success()
+      }
       resolve()
     }
     store
