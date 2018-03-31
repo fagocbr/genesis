@@ -56,12 +56,8 @@ export const interceptors = (http, store, router, cache) => {
      * @return {int}
      */
     const status = response =>  {
-      // response with unknown error
-      if (error.config && error.config.requestId) {
-        return 403
-      }
       // The route where request was started was leaved, all requests was canceled
-      if (!response) {
+      if (!response && !error.config) {
         return 0
       }
       // Handle with full error in request
