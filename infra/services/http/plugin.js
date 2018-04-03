@@ -64,7 +64,7 @@ export const interceptors = (http, store, router, cache) => {
         return 0
       }
       // Handle with full error in request
-      if (response.status) {
+      if ([401, 403].indexOf(response.status) > -1) {
         return response.status
       }
       return 0
