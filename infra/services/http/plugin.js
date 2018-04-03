@@ -57,11 +57,14 @@ export const interceptors = (http, store, router, cache) => {
      */
     const status = response =>  {
       // The route where request was started was leaved, all requests was canceled
-      if (!response && !error.config) {
+      if (!response) {
+        if (error.config) {
+          return 428
+        }
         return 0
       }
       // Handle with full error in request
-      if ([401, 403].indexOf(response.status) > -1) {
+      if (response.status) {
         return response.status
       }
       return 0
