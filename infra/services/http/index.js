@@ -34,29 +34,6 @@ export const http = create()
 http.HOME = URL_HOME
 
 /**
- * @param http
- * @return {Promise<AxiosResponse<any>>}
- */
-async function env(http) {
-  return await axios
-    .create()
-    .get('statics/env.json')
-    .then(response => {
-      const env = response.data
-      if (typeof env !== 'object') {
-        return
-      }
-      http.defaults.baseURL = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.API
-      http.HOME = env.PROTOCOL + '://' + env.DOMAIN + (env.PORT ? ':' + env.PORT : '') + env.HOME
-    })
-}
-
-if (process.env.STAGING) {
-  // noinspection JSIgnoredPromiseFromCall
-  env(http)
-}
-
-/**
  * @returns {AxiosInstance}
  */
 export const install = () => {

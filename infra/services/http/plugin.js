@@ -7,12 +7,23 @@ import Cache from 'js-cache'
  * @param http
  * @param store
  * @param router
+ */
+export const env = (http, store, router) => {
+  const httpEnv = Http.get('httpEnv')
+  httpEnv(http, store, router)
+}
+
+/**
+ * @param http
+ * @param store
+ * @param router
  * @param cache
  */
 export const interceptors = (http, store, router, cache) => {
   const httpRequest = Http.get('httpRequest')
   const httpResponse = Http.get('httpResponse')
   const httpError = Http.get('httpError')
+
   /**
    * @param request
    * @returns {*}
@@ -86,6 +97,7 @@ export const interceptors = (http, store, router, cache) => {
  */
 export default (Vue, {store, router}) => {
   install()
+  env(http, store, router)
   interceptors(http, store, router, new Cache)
   Object.defineProperty(Vue.prototype, '$http', {
     get () {
