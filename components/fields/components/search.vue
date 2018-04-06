@@ -1,8 +1,8 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component">
 
-      <div v-show="editable" :class="{'has-error': problems.length}">
+      <div v-show="editable" :class="{'has-error': problems.length || error}">
 
         <div ref="input" class="input full-width" :class="{'disabled': disabled}">
           <span v-if="!selected" class="field-placeholder">{{ placeholder }}</span>

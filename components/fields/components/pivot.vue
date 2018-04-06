@@ -1,10 +1,10 @@
 <template>
-    <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+    <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
       <div slot="component">
-        <div v-show="editable" :class="{'has-error': problems.length}">
-  
+        <div v-show="editable" :class="{'has-error': problems.length || error}">
+
           <input v-if="!model[0] && placeholder" :placeholder="placeholder" class="field-placeholder" readonly/>
-  
+
           <q-select ref="input" class="input full-width" :class="{'disabled': disable}"
                     v-model="model" v-bind="{id, name, filterPlaceholder, filter, chips, multiple, toggle, disable, options: data}"
                     @change="triggerUpdateValue(model)"></q-select>
@@ -14,11 +14,11 @@
       </div>
     </field>
   </template>
-  
+
   <script type="text/javascript">
     import Field from 'genesis/components/fields/components/base.vue'
     import FieldAbstract from 'genesis/components/fields/abstract'
-  
+
     export default {
       extends: FieldAbstract,
       components: {
@@ -82,27 +82,27 @@
           if (!Array.isArray(body)) {
             return
           }
-  
+
           const value = this.options.reference.value
           const label = this.options.reference.label
           let details = this.options.reference.details
           if (!details) {
             details = row => row[value]
           }
-  
+
           const options = body.map(row => ({
             value: String(row[value]),
             label: row[label],
             details: details
           }))
-  
+
           if (this.options.empty) {
             options.unshift({
               value: '',
               label: this.options.empty
             })
           }
-  
+
           this.data = options
         },
         /**
@@ -153,7 +153,7 @@
       }
     }
   </script>
-  
+
   <style lang="stylus" rel="stylesheet/stylus">
     .field-pivot
       .field-placeholder
@@ -185,4 +185,3 @@
         font-family Roboto
         font-size 14.4px
   </style>
-  

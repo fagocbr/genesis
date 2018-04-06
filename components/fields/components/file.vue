@@ -1,5 +1,5 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component" :class="{'row': image}">
       <template v-if="model">
         <div v-if="image" class="col-2">

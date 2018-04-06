@@ -1,7 +1,7 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component">
-      <div v-show="editable" class="toggle-wrapper" :class="{'has-error': problems.length}">
+      <div v-show="editable" class="toggle-wrapper" :class="{'has-error': problems.length || error}">
         <label>
           <q-toggle ref="input" v-model="model" v-bind="{type, name, disable}"
                     @input="$emit('input', model)"></q-toggle>

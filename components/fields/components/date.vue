@@ -1,7 +1,7 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component">
-      <div v-show="editable" class="component" :class="{'has-error': problems.length}">
+      <div v-show="editable" class="component" :class="{'has-error': problems.length || error}">
         <template v-if="!embed">
           <i class="material-icons" :class="{'disabled': disabled}" @click="openWidget">&#xE878;</i>
 

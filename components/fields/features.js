@@ -79,5 +79,9 @@ export const props = {
   },
   cleaning: {
     default: () => undefined
+  },
+  error: {
+    type: Boolean,
+    default: () => false
   }
 }

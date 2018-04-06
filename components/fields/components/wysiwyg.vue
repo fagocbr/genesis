@@ -1,6 +1,6 @@
 <template>
   <field :class="classNames" contenteditable="false"
-         v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+         v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component">
       <div
         v-if="disabled"
@@ -54,7 +54,7 @@
         type: Object,
         default () {
           return {
-            language_url: '/statics/languages/pt_BR.js',
+            language_url: 'statics/languages/pt_BR.js',
             selector: 'textarea',
             height: 300,
             theme: 'modern',

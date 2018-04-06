@@ -2,7 +2,7 @@
   <div class="field-base" v-show="visible">
     <slot name="label">
       <div v-if="!inline" class="field-base-label">
-        <label :for="id" v-if="label" class="field-label" :class="{'label-with-error': problems.length}">
+        <label :for="id" v-if="label" class="field-label" :class="{'label-with-error': problems.length || error}">
           {{ label }} <span v-if="!!validate" :title="title">*</span>
           <app-tooltip v-if="tooltip">
             <span v-html="tooltip"></span>
@@ -37,7 +37,8 @@
       label: String,
       validate: Object,
       title: String,
-      tooltip: String
+      tooltip: String,
+      error: Boolean
     },
     computed: {
       /**

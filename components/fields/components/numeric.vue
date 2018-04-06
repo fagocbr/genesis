@@ -1,7 +1,7 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component">
-      <div v-show="editable" :class="{'has-error': problems.length}">
+      <div v-show="editable" :class="{'has-error': problems.length || error}">
         <!--<q-numeric v-model="model" v-bind="bind"></q-numeric>-->
         <div class="q-numeric input" :name="field" :id="id" :class="{'disabled': disabled}">
           <i v-if="!disabled" class="material-icons" @click="remove(model, step)">remove</i>

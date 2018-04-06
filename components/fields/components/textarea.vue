@@ -1,7 +1,7 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component">
-      <div v-show="editable" :class="{'has-error': problems.length}">
+      <div v-show="editable" :class="{'has-error': problems.length || error}">
         <textarea ref="input" class="input full-width" autocomplete="off"
                   v-bind="{id, name, placeholder, maxlength, disabled}"
                   @keypress="keypress" @keyup="keyup" @blur="blur" @focus="focus" @keydown.enter="enter"

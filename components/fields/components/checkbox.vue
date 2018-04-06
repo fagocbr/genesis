@@ -1,7 +1,7 @@
 <template>
-  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible}">
+  <field :class="classNames" v-bind="{id, inline, problems, label, validate, title, tooltip, editable, visible, error}">
     <div slot="component">
-      <div v-show="editable" :class="{'has-error': problems.length}" class="checkbox-wrapper">
+      <div v-show="editable" :class="{'has-error': problems.length || error}" class="checkbox-wrapper">
         <label>
           <q-checkbox ref="input" v-model="model" v-bind="{type, name, disable}" @input="input"></q-checkbox>
           <span :class="{'disabled': disabled}" v-html="info"></span>
