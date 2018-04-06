@@ -84,6 +84,10 @@ export default {
     debug: {
       type: Boolean,
       default: () => false
+    },
+    undo: {
+      type: Boolean,
+      default: () => true
     }
   }
 }

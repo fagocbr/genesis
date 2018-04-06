@@ -1,5 +1,5 @@
 import { Data } from 'genesis'
-import { undo } from 'genesis/support/message/index'
+import { toast, undo } from 'genesis/support/message/index'
 import { wildcard } from 'genesis/support/utils/index'
 
 export default {
@@ -24,9 +24,15 @@ export default {
             populateGrid(this, response)
           },
           delete: (response) => {
-            undo(wildcard(this.messages.delete, this.$http.$body(response)), () => {
-              // window.alert('Undo')
-            })
+            if (this.undo) {
+              undo(wildcard(this.messages.delete, this.$http.$body(response)), () => {
+                // console.log(response)
+              })
+              this.browse(this.path)
+              return
+            }
+            toast(wildcard(this.messages.delete, this.$http.$body(response)))
+
             this.browse(this.path)
           }
         }
