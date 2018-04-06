@@ -8,16 +8,20 @@ export const CHANGE_TOKEN = 'setAuthToken'
 
 export const CHANGE_REMEMBER = 'setAuthRemember'
 
+export const CHANGE_RECENT = 'setAuthRecent'
+
 const state = {
   remember: get(APP_REMEMBER),
   user: undefined,
-  token: undefined
+  token: undefined,
+  recent: undefined
 }
 
 const getters = {
   getAuthRemember: (state) => state.remember,
   getAuthUser: (state) => state.user,
-  getAuthToken: (state) => state.token
+  getAuthToken: (state) => state.token,
+  getAuthRecent: (state) => state.recent
 }
 
 const actions = {
@@ -27,12 +31,15 @@ const actions = {
   },
   setAuthUser: (store, user) => {
     store.commit(CHANGE_USER, user)
-    set(APP_USER, user, store.getters.getAuthRemember)
+    set(APP_USER, user, !!store.getters.getAuthRemember)
   },
   setAuthToken: (store, token) => {
     store.commit(CHANGE_TOKEN, token)
-    set(APP_TOKEN, token, store.getters.getAuthRemember)
+    set(APP_TOKEN, token, !!store.getters.getAuthRemember)
     setToken(token)
+  },
+  setAuthRecent: (store, recent) => {
+    store.commit(CHANGE_RECENT, recent)
   }
 }
 
@@ -45,6 +52,9 @@ const mutations = {
   },
   [CHANGE_TOKEN] (state, token) {
     state.token = token
+  },
+  [CHANGE_RECENT] (state, recent) {
+    state.recent = recent
   }
 }
 
