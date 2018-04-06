@@ -10,6 +10,9 @@ import Cache from 'js-cache'
  */
 export const env = (http, store, router) => {
   const httpEnv = Http.get('httpEnv')
+  if (typeof httpEnv !== 'function') {
+    return
+  }
   httpEnv(http, store, router)
 }
 
@@ -34,6 +37,9 @@ export const interceptors = (http, store, router, cache) => {
       // open loading
       loading(true, 100)
     }
+    if (typeof httpRequest !== 'function') {
+      return request
+    }
     return httpRequest(request, cache)
   }
   http.interceptors.request.use(request)
@@ -49,6 +55,9 @@ export const interceptors = (http, store, router, cache) => {
     if (response.headers && response.headers.authorization) {
       // noinspection JSUnresolvedVariable
       store.dispatch('setAuthToken', response.headers.authorization)
+    }
+    if (typeof httpResponse !== 'function') {
+      return response
     }
     return httpResponse(response, cache)
   }
@@ -83,6 +92,9 @@ export const interceptors = (http, store, router, cache) => {
 
     const {response} = error
 
+    if (typeof httpResponse !== 'function') {
+      return Promise.reject(error)
+    }
     return Promise.reject(httpError(error, router, store, status(response)))
   }
 
