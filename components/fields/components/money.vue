@@ -83,7 +83,7 @@
       /**
        */
       keyup () {
-          this.activate()
+        this.activate()
       }
     },
     watch: {
