@@ -131,6 +131,18 @@ const ref = (id, $this) => {
 }
 
 /**
+ * @param path
+ * @return {string}
+ */
+const href = path => {
+  path = String(path)
+  if (path.substring(0, 1) === '/') {
+    path = path.substring(1)
+  }
+  return `/#/${path}`
+}
+
+/**
  * @type {Object}
  */
 const genesis = {
@@ -143,7 +155,8 @@ const genesis = {
   emit,
   is,
   equal,
-  ref
+  ref,
+  href
 }
 
 /**
