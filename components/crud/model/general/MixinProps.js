@@ -88,6 +88,10 @@ export default {
     undo: {
       type: Boolean,
       default: () => true
+    },
+    useQueryData: {
+      type: Boolean,
+      default: () => true
     }
   }
 }

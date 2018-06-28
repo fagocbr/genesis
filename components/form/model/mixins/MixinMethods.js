@@ -94,7 +94,7 @@ export default {
     updateRecord () {
       const reduces = (accumulate, field) => {
         accumulate[field] = this.data[field] || this.schemas[field].default
-        if (this.$route.query[field]) {
+        if (this.$route.query[field] && this.useQueryData) {
           accumulate[field] = this.$route.query[field]
         }
         return accumulate
