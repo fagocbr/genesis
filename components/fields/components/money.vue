@@ -79,6 +79,11 @@
        */
       keypress () {
         this.activate()
+      },
+      /**
+       */
+      keyup () {
+        this.activate()
       }
     },
     watch: {
