@@ -145,6 +145,10 @@
           maxHeight: '100vh',
           height: '90vh'
         })
+      },
+      reference: {
+        type: String,
+        default: () => ('')
       }
     },
     data: () => ({
@@ -284,8 +288,12 @@
         if (!value) {
           return
         }
+        let reference = this.remote.reference.value
+        if (this.reference) {
+          reference = this.reference
+        }
         const filter = {}
-        filter[this.remote.reference.value] = value
+        filter[reference] = value
         const done = data => {
           if (data.length) {
             this.searchSelected(data[0], true)

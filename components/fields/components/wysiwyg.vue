@@ -22,100 +22,135 @@
 </template>
 
 <script type="text/javascript">
-  import TinyMCE from '@tinymce/tinymce-vue'
-  import Field from 'genesis/components/fields/components/base.vue'
-  import FieldAbstract from 'genesis/components/fields/abstract'
+import TinyMCE from '@tinymce/tinymce-vue'
+import Field from 'genesis/components/fields/components/base.vue'
+import FieldAbstract from 'genesis/components/fields/abstract'
 
-  export default {
-    extends: FieldAbstract,
-    name: 'field-wysiwyg',
-    components: {
-      Field,
-      'tiny-mce': TinyMCE
+export default {
+  extends: FieldAbstract,
+  name: 'field-wysiwyg',
+  components: {
+    Field,
+    'tiny-mce': TinyMCE
+  },
+  props: {
+    border: {
+      type: Boolean,
+      default: () => true
     },
-    props: {
-      border: {
-        type: Boolean,
-        default: () => true
-      },
-      apiKey: {
-        type: String,
-        default: 'vho5426hnv6nehaqnf0hv97vb1yygzuntvnaw4mzxaa10cwt'
-      },
-      url: {
-        type: String,
-        default: ''
-      },
-      timeout: {
-        type: Number,
-        default:  1000
-      },
-      init: {
-        type: Object,
-        default () {
-          return {
-            language_url: 'statics/languages/pt_BR.js',
-            selector: 'textarea',
-            height: 300,
-            theme: 'modern',
-            // imagetools codesample template anchor
-            plugins: 'print code preview fullpage searchreplace autolink directionality visualblocks visualchars ' +
-            'fullscreen image link media table charmap hr pagebreak nonbreaking toc ' +
-            'insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern help',
-            toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter ' +
-            'alignright alignjustify | numlist bullist outdent indent | removeformat',
-            templates: [],
-            image_advtab: true,
-            images_upload_url: this.url,
-            /* init_instance_callback: editor => { editor.execCommand('mceImage') }, */
-            content_css: []
-          }
-        }
-      }
+    apiKey: {
+      type: String,
+      default: 'vho5426hnv6nehaqnf0hv97vb1yygzuntvnaw4mzxaa10cwt'
     },
-    data: () => ({
-      active: true,
-      ready: false,
-      model: ''
-    }),
-    methods: {
-      /**
-       */
-      onPostRender () {
-        this.ready = true
-        if (this.model !== this.value) {
-          this.active = false
-          this.model = this.value
-          window.setTimeout(e => this.active = true, 500)
-        }
-      },
-      /**
-       * @param value
-       * @return {number}
-       */
-      updateModel (value) {
-        if (!this.ready) {
-          return
-        }
-        this.model = value
-      }
+    url: {
+      type: String,
+      default: ''
     },
-    watch: {
-      value (value) {
-        this.updateModel(value)
-      },
-      model (model) {
-        if (this.value !== model) {
-          this.$emit('input', model)
-        }
-      }
+    timeout: {
+      type: Number,
+      default: 1000
     },
-    mounted () {
-      if (this.value) {
-        this.model = this.value
+    height: {
+      type: Number,
+      default: 300
+    },
+    theme: {
+      type: String,
+      default: 'modern'
+    },
+    language: {
+      type: String,
+      default: 'statics/languages/pt_BR.js'
+    },
+    selector: {
+      type: String,
+      default: 'textarea'
+    },
+    plugins: {
+      type: String,
+      default: 'print code preview fullpage searchreplace autolink directionality visualblocks visualchars ' +
+        'fullscreen image link media table charmap hr pagebreak nonbreaking toc ' +
+        'insertdatetime advlist lists textcolor wordcount contextmenu colorpicker textpattern help'
+    },
+    toolbar: {
+      type: String,
+      default: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter ' +
+        'alignright alignjustify | numlist bullist outdent indent | removeformat'
+    },
+    templates: {
+      type: Array,
+      default: () => ([])
+    },
+    css: {
+      type: Array,
+      default: () => ([])
+    },
+    imageAdvancedTab: {
+      type: Boolean,
+      default: true
+    },
+    init: {
+      type: Object,
+      default () {
+        return {
+          height: this.height,
+          theme: this.theme,
+          language_url: this.language,
+          selector: this.selector,
+          plugins: this.plugins,
+          toolbar1: this.toolbar,
+          templates: this.templates,
+          images_upload_url: this.url,
+          content_css: this.css,
+          image_advtab: this.imageAdvancedTab
+          /* init_instance_callback: editor => { editor.execCommand('mceImage') }, */
+        }
       }
     }
+  },
+  data: () => ({
+    active: true,
+    ready: false,
+    model: ''
+  }),
+  methods: {
+    /**
+     */
+    onPostRender () {
+      this.ready = true
+      if (this.model !== this.value) {
+        this.active = false
+        this.model = this.value
+        window.setTimeout(e => this.active = true, 500)
+      }
+    },
+    /**
+     * @param value
+     * @return {number}
+     */
+    updateModel (value) {
+      if (!this.ready) {
+        return
+      }
+      this.model = value
+    }
+  },
+  watch: {
+    value (value) {
+      this.updateModel(value)
+    },
+    model (model) {
+      if (this.value !== model) {
+        this.$emit('input', model)
+      }
+    }
+  },
+  mounted () {
+    if (this.value) {
+      this.model = this.value
+    }
   }
+}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">

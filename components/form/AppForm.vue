@@ -76,6 +76,10 @@
       if (this.$route.query.tab) {
         this.tabSelected = this.$route.query.tab
       }
+      this.fireWatch('lifecycle/created')
+    },
+    mounted () {
+      this.fireWatch('lifecycle/mounted')
     }
   }
 </script>
