@@ -14,7 +14,7 @@
           :api-key="apiKey"
           :cloud-channel="'dev'"
           :init="init"
-          @onPostRender="onPostRender"
+          @onInit="onInit"
         />
       </div>
     </div>
@@ -116,7 +116,7 @@ export default {
   methods: {
     /**
      */
-    onPostRender () {
+    onInit () {
       this.ready = true
       if (this.model !== this.value) {
         this.active = false
