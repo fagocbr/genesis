@@ -102,7 +102,30 @@ export default {
           templates: this.templates,
           images_upload_url: this.url,
           content_css: this.css,
-          image_advtab: this.imageAdvancedTab
+          image_advtab: this.imageAdvancedTab,
+          file_picker_callback: function(cb, value, meta) {
+            let input = document.createElement('input')
+            input.setAttribute('type', 'file')
+            input.setAttribute('accept', 'image/x-png,image/gif,image/jpeg')
+
+            input.onchange = function() {
+              let file = this.files[0]
+
+              let reader = new FileReader()
+              reader.onload = function () {
+                let id = 'blobid' + (new Date()).getTime()
+                let blobCache =  tinymce.activeEditor.editorUpload.blobCache
+                let base64 = reader.result.split(',')[1]
+                let blobInfo = blobCache.create(id, file, base64)
+                blobCache.add(blobInfo)
+
+                cb(blobInfo.blobUri(), { title: file.name, style: 'max-width: 100%; height: auto;'})
+              }
+              reader.readAsDataURL(file)
+            }
+            input.click()
+          },
+          file_picker_types: 'image'
           /* init_instance_callback: editor => { editor.execCommand('mceImage') }, */
         }
       }
