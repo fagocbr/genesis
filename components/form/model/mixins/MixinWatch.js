@@ -46,6 +46,14 @@ export default {
           name: old
         }
       })
+    },
+    '$store.getters.AppMessages': {
+      deep: true,
+      handler (messages) {
+        Object.keys(this.schemas).forEach((field) => {
+          this.schemas[field].errors = this.getErrors(field, messages)
+        })
+      }
     }
   }
 }
