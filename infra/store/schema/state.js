@@ -14,6 +14,6 @@ export default {
     height: 0,
     modified: false,
     menu: [],
-    messages: []
+    messages: {}
   }
 }

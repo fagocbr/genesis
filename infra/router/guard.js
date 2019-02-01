@@ -142,7 +142,7 @@ export const afterEach = (to, from) => {
     setTooltip(to.meta.tooltip)
   }
   // clear messages
-  store.dispatch('setAppMessages', []).then(updateInfo)
+  store.dispatch('setAppMessages', {}).then(updateInfo)
 }
 
 /**
