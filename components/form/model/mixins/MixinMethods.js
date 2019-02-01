@@ -3,7 +3,6 @@ import { fireEvent } from 'genesis/support/model/events'
 import { reduce } from 'genesis/support/model/form'
 import { clone } from 'genesis/support/utils'
 
-
 export default {
   methods: {
     /**
@@ -199,15 +198,23 @@ export default {
     },
     /**
      * @param {String} field
+     * @param {Object} messages
      * @return {Array}
      */
-    getErrors (field) {
+    getErrors (field, messages = {}) {
       const errors = []
       if (this.schemas[field].validate && this.$v.record[field] && this.$v.record[field].$error) {
         Object.keys(this.schemas[field].validate).forEach(rule => {
           const status = this.$v.record[field][rule]
           const parameters = this.$v.record[field].$params[rule]
           errors.push({rule, status, parameters})
+        })
+      }
+      if (messages && messages[field]) {
+        errors.push({
+          rule: messages[field],
+          status: false,
+          parameters: []
         })
       }
       return errors
