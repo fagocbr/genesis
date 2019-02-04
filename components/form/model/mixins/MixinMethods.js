@@ -204,17 +204,31 @@ export default {
     getErrors (field, messages = {}) {
       const errors = []
       if (this.schemas[field].validate && this.$v.record[field] && this.$v.record[field].$error) {
-        Object.keys(this.schemas[field].validate).forEach(rule => {
+        Object.keys(this.schemas[field].validate).forEach((rule) => {
           const status = this.$v.record[field][rule]
           const parameters = this.$v.record[field].$params[rule]
           errors.push({rule, status, parameters})
         })
       }
       if (messages && messages[field]) {
+        const message = messages[field]
+
+        let rule
+        let parameters = []
+        if (typeof message === 'string') {
+          rule = message
+        }
+        if (typeof message === 'object') {
+          rule = message.rule
+          parameters = message.parameters
+        }
+        if (!rule) {
+          return errors
+        }
         errors.push({
-          rule: messages[field],
+          rule: rule,
           status: false,
-          parameters: []
+          parameters: parameters
         })
       }
       return errors
