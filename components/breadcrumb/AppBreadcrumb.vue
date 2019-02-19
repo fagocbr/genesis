@@ -1,5 +1,10 @@
 <template>
   <ul class="app-breadcrumb breadcrumb">
+    <li>
+      <router-link :to="getUserType">
+        <q-icon :name="icon"></q-icon>
+      </router-link>
+    </li>
     <li v-for="item in items">
       <router-link :to="item.to">
         <template v-if="displayIcon.show">
@@ -16,6 +21,7 @@
 <script type="text/javascript">
   import { Events } from 'quasar-framework'
   import { PATH_HOME } from 'genesis/support/index'
+  import { mapState } from 'vuex'
 
   export default {
     name: 'app-breadcrumb',
@@ -56,7 +62,7 @@
        */
       reduceBreadcrumb (accumulate, match) {
         let to = match.path
-        Object.keys(this.$route.params).forEach(key => (to = to.replace(':' + key, this.$route.params[key])))
+        Object.keys(this.$route.params).forEach(key => console.log(to = to.replace(':' + key, this.$route.params[key])))
         if (this.isBreadcrumb(match)) {
           accumulate.push({
             icon: match.meta.icon,
@@ -83,7 +89,18 @@
           return true
         }
         return !match.meta.avoid.includes(this.$route.path)
-      }
+      },
+    },
+    computed:{
+      ...mapState({
+        getUserType: (state) => {
+          if (!state.auth.user.type){
+            return ''
+          }
+          return `/principal/${state.auth.user.type}`
+        }
+
+      })
     },
     created () {
       Events.$on('app.route.update', this.updateBreadcrumb)
