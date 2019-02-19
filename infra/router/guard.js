@@ -94,7 +94,7 @@ export const beforeEach = (to, from, next) => {
   // noinspection JSUnresolvedVariable
   const security = to.meta.security
   // abort all requests xhr
-  abort('The route where request was started was leaved, all requests was canceled')
+  // abort('The route where request was started was leaved, all requests was canceled')
   // the target is not protected
   if (!security) {
     return toNext(to, next)
