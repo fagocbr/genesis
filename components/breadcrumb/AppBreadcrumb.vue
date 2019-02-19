@@ -1,10 +1,5 @@
 <template>
   <ul class="app-breadcrumb breadcrumb">
-    <li>
-      <router-link :to="path">
-        <q-icon :name="icon"></q-icon>
-      </router-link>
-    </li>
     <li v-for="item in items">
       <router-link :to="item.to">
         <template v-if="displayIcon.show">
