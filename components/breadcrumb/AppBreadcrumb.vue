@@ -62,7 +62,7 @@
        */
       reduceBreadcrumb (accumulate, match) {
         let to = match.path
-        Object.keys(this.$route.params).forEach(key => console.log(to = to.replace(':' + key, this.$route.params[key])))
+        Object.keys(this.$route.params).forEach(key => to = to.replace(':' + key, this.$route.params[key]))
         if (this.isBreadcrumb(match)) {
           accumulate.push({
             icon: match.meta.icon,
@@ -97,7 +97,7 @@
           if (!state.auth.user.type){
             return ''
           }
-          return `/principal/${state.auth.user.type}`
+          return `/${PATH_HOME.name.split('.')[1]}/${state.auth.user.type}`
         }
 
       })
