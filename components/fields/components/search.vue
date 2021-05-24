@@ -8,7 +8,7 @@
           <span v-if="!selected" class="field-placeholder">{{ placeholder }}</span>
           <span v-else :class="'selected ellipsis'">{{ selected }}</span>
           <div class="pull-right" style="margin: -10px -9px" v-if="!disabled">
-            <app-button v-if="selected" v-bind="{small: true, round: true, color: 'negative', icon: 'clear'}"
+            <app-button v-if="selected && cleanable" v-bind="{small: true, round: true, color: 'negative', icon: 'clear'}"
                         class="clear" @click="clear"/>
             <app-button v-bind="{small: true, raised: false, rotate: false, icon: 'search'}"
                         class="widget" @click="openWidget"/>
@@ -93,6 +93,10 @@
     },
     name: 'field-search',
     props: {
+      cleanable: {
+        type: Boolean,
+        default: true
+      },
       remote: {
         type: Object,
         default: () => ({})
